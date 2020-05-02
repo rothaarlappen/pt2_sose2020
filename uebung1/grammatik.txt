@@ -6,14 +6,13 @@ STARTSYMBOL = {Ausdruck}
 
 Ausdruck = "(" Ausdruck ")"
 
-Ausdruck = Ausdruck Operator Ausdruck
+Ausdruck =| Ausdruck Operator Ausdruck
 
-Ausdruck = "round(" Ausdruck ")" 
+Ausdruck =| "round(" Ausdruck ")" 
 
+Ausdruck =| Ausdruck Zwischenspeichern
 
-Ausdruck = Ausdruck Zwischenspeichern
-
-Ausdruck = Zahl | Konstanten | Speicherplatz
+Ausdruck =| Zahl | Konstanten | Speicherplatz
 
 
 Speicherplatz = "M" Ziffer
