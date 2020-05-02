@@ -4,36 +4,36 @@ a) Erweiterte Backus Naur Form für die Taschenrechner-Grammatik
 
 STARTSYMBOL = {Ausdruck}
 
-Ausdruck = "(" Ausdruck ")"
+Ausdruck = "(" Ausdruck ")";
 
-Ausdruck = Ausdruck Operator Ausdruck
+Ausdruck = Ausdruck Operator Ausdruck;
 
-Ausdruck = "round(" Ausdruck ")" 
-
-
-Ausdruck = Ausdruck Zwischenspeichern
-
-Ausdruck = Zahl | Konstanten | Speicherplatz
+Ausdruck = "round(" Ausdruck ")";
 
 
-Speicherplatz = "M" Ziffer
+Ausdruck = Ausdruck Zwischenspeichern;
 
-Zwischenspeichern = "->" Speicherplatz
+Ausdruck = Zahl | Konstanten | Speicherplatz;
 
 
-Konstanten = "pi" | "e"
+Speicherplatz = "M" Ziffer;
 
-Operator = "+" | "-" | "*" | "/" | "^" | "%"
+Zwischenspeichern = "->" Speicherplatz;
 
-Zahl = ["-"] (Ganzzahl | Kommazahl)
 
-Ganzzahl = "0" | (ZifferAußerNull {Ziffer})
+Konstanten = "pi" | "e";
 
-Kommazahl = Ganzzahl "," {Ziffer}
+Operator = "+" | "-" | "*" | "/" | "^" | "%";
 
-Ziffer = ZifferAußerNull | "0"
+Zahl = ["-"] (Ganzzahl | Kommazahl);
 
-ZifferAußerNull = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" 
+Ganzzahl = "0" | (ZifferAußerNull {Ziffer});
+
+Kommazahl = Ganzzahl "," {Ziffer};
+
+Ziffer = ZifferAußerNull | "0";
+
+ZifferAußerNull = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
 
 b) (((-25,321 -> M1) / (round(3 * pi) % 6)) -> M8) + M1
 
