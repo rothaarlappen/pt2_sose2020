@@ -1,0 +1,13 @@
+Aufgabe 1.3: Theoretische Aufgabe: Grammatik
+
+c)  
+I.  ((1 + 1) - 3
+    Die Terminalsymbole "(" und ")" werden nur im Schritt 
+        Ausdruck = "(" Ausdruck ")"         und
+        Ausdruck = "round(" Ausdruck ")" 
+    hinzugefügt. In beiden Fällen wird jeweils eine Klammer hinzugefügt. Ein Wort, welches
+    eine unterschiedliche Anzahl an öffnenden und schließenden Klammern beinhaltet, kann also 
+    nicht durch die oben beschriebene Grammatik erstellt werden.
+
+II. ungültiges Beispiel
+    Buchstaben sind nicht in der Menge der Terminalsymbole enthalten.

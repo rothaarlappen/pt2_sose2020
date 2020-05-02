@@ -1,0 +1,6 @@
+Aufgabe 1.3: Theoretische Aufgabe: Grammatik
+
+
+b) (((-25,321 -> M1) / (round(3 * pi) % 6)) -> M8) + M1
+
+
