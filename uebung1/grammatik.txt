@@ -2,7 +2,7 @@ Aufgabe 1.3: Theoretische Aufgabe: Grammatik
 
 a) Erweiterte Backus Naur Form für die Taschenrechner-Grammatik
 
-STARTSYMBOL = {Ausdruck}
+Eingabe = Ausdruck
 
 Ausdruck = "(" Ausdruck ")"
 
