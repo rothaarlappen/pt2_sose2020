@@ -4,7 +4,7 @@ a) Erweiterte Backus Naur Form für die Taschenrechner-Grammatik
 
 Eingabe = Ausdruck
 
-Ausdruck = "(" Ausdruck ")";
+Ausdruck = "(" Ausdruck ")"
 
 Ausdruck =| Ausdruck Operator Ausdruck
 
@@ -14,9 +14,9 @@ Ausdruck =| Ausdruck Zwischenspeichern
 
 Ausdruck =| Zahl | Konstanten | Speicherplatz
 
-Speicherplatz = "M" Ziffer;
+Speicherplatz = "M" Ziffer
 
-Zwischenspeichern = "->" Speicherplatz;
+Zwischenspeichern = "->" Speicherplatz
 
 
 Konstanten = "pi" | "e"
