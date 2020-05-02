@@ -22,7 +22,6 @@ void prettyPrint(double decimal)
 		output =  to_string((int) fmod(decimal, 1000)) + "." + output;
 		decimal = floor(decimal / 1000);
 	}
-	// muss das sein? Kann man die schleife nicht irgendwie cooler machen?
 	output.pop_back();
 	cout << output << endl;
 }

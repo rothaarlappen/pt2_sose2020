@@ -2,51 +2,81 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-
+#include <vector>
 
 using namespace std;
 
-int ** change(const int due, const int paid)
+// How to use:
+// g++ change.cpp -o change
+// ./change <positive_int_due> <positive_int_paid> [-o <filename>]
+#pragma region helperFunction
+vector<pair<int, int>> computeChange(const int due, const int paid)
 {
 	// ToDo: compute and print set of change tuples
-	int i1 = 42;
-	int i2 = 69;
-	int ** arr1 = (int **) malloc(1);
-	arr1[0] = (int *) malloc(2);
-
 	int change = paid - due;
 
-	int * coins = (int *) malloc(12 * sizeof(int));
-	coins[11] 	= 5000;
-	coins[10] 	= 2000;
-	coins[9] 	= 1000;
-	coins[8] 	= 500;
-	coins[7] 	= 200;
-	coins[6] 	= 100;
-	coins[5] 	= 50;
-	coins[4] 	= 20;
-	coins[3] 	= 10;
-	coins[2] 	= 5;
-	coins[1] 	= 2;
-	coins[0] 	= 1;
-	int * counter = (int *) calloc(12, sizeof(int));
+    vector<pair<int, int>> coins = { 
+        {5000, 0}, 
+        {2000, 0}, 
+        {1000, 0}, 
+        {500, 0}, 
+        {200, 0}, 
+        {100, 0}, 
+        {50, 0}, 
+        {20, 0}, 
+        {10, 0}, 
+        {5, 0}, 
+        {2, 0}, 
+        {1, 0}
+    };
 
 	// compute set of change tuples
-
 	while (change > 0){
-		for(int i = 11; i > 0 ; i--){
-			if(coins[i] <= change){
-				change -= coins[i];
-				counter[i] ++;
+		for(int i = 0; i < coins.size() ; i++){
+			if(coins[i].first <= change){
+				change -= coins[i].first;
+				coins[i].second++;
 				break;
 			}
 		}
 	}
+	return coins;
+}
+void printResultInConsole(vector<pair<int,int>> result){
+    for(int i = 0; i < result.size() ; i++){
+        if (result[i].second)
+            cout << result[i].first << "," << result[i].second << endl;
+    }
+}
+void printResultInFile(vector<pair<int,int>> result, string filename){
+    ofstream a_file( filename );
 
-    arr1[0] = coins;
-	arr1[1] = counter;
+		for(int i = 0; i < result.size() ; i++){
+			if (result[i].second)
+				a_file << result[i].first << "," << result[i].second << endl;
+		}
+		a_file.close();
+		cout << "Die Ausgabe wurde in die Datei " << filename << " geschrieben" << endl;
+}
+string getFilename(char * argv[]){
+    string filename = argv[4];
+    string checkString = "-o";
 
-	return arr1;
+   
+    if (filename.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890_") != std::string::npos)
+    {
+        cerr << "Ungueltiger Dateiname. Bitte verwenden Sie keine Sonderzeichen.";
+        return "";
+    }
+    if(!(checkString.compare(argv[3]) == 0)){
+        cerr << "Ungültige Eingabe." << endl;
+        return "";
+    }
+
+    if(!endsWith(filename, ".txt")){
+        filename += ".txt";
+    }
+    return filename;
 }
 // übernommen von https://thispointer.com/c-how-to-check-if-a-string-ends-with-an-another-given-string/
 bool endsWith(const std::string &mainStr, const std::string &toMatch)
@@ -57,15 +87,16 @@ bool endsWith(const std::string &mainStr, const std::string &toMatch)
 		else
 			return false;
 }
-
+#pragma endregion helperFunction
+#pragma region main
 int main(int argc, char * argv[])
 {
-	if(argc != 3 && argc !=5)
-		cout << "Ungültige Anzahl an Parametern. Bitte überprüfen sie ihre Eingabe" << endl;
-
-	int ** changeArr;
+	vector<pair<int,int>> changeVector;
 	int due;
 	int paid; 
+
+	if(argc != 3 && argc != 5)
+		cout << "Ungültige Anzahl an Parametern. Bitte überprüfen sie ihre Eingabe" << endl;
 
 	try{
 		due = std::stoi(argv[1]);
@@ -78,32 +109,23 @@ int main(int argc, char * argv[])
 		return 1;
 	}
 
-	changeArr =  change(due, paid);
+    if(due < 0 || paid < 0){
+        cout << "Ungueltige Eingabe." << endl;
+        return 1;
+    }
+
+	changeVector =  computeChange(due, paid);
 	
 	if(argc == 3){
-		for(int i = 0; i < 12 ; i++){
-			if (changeArr[1][i])
-				cout << changeArr[0][i] << "," << changeArr[1][i] << endl;
-		}
+        printResultInConsole(changeVector);
 	} else if (argc == 5) {		
-		string checkString = "-o";
-		string fileName = argv[4];
-
-		if(!(checkString.compare(argv[3]) == 0))
-			cout << "Ungültige Eingabe" << endl;
-
-		if(!endsWith(fileName, ".txt"))
-			fileName += ".txt";
-
-		ofstream a_file( fileName );
-
-		for(int i = 0; i < 12 ; i++){
-			if (changeArr[1][i])
-			a_file << changeArr[0][i] << "," << changeArr[1][i] << endl;
-		}
-		a_file.close();
-		cout << "Die Ausgabe wurde in die Datei " << fileName << " geschrieben" << endl;
+		string filename = getFilename(argv);
+        if(filename != ""){
+		    printResultInFile(changeVector, filename);
+        } else {
+            return 1;
+        }
 	}
 	return 0;
 }
-
+#pragma endregion main

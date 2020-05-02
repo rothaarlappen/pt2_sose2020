@@ -7,7 +7,6 @@ using namespace std;
 
 int stepsNeeded = 0;
 bool overflow = false;
-
 #pragma region fibonacci_recursive
 // returns array {<nthFibonacci>,<requiredSteps>}
 int fibonacci(int number)

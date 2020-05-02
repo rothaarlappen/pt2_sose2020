@@ -9,6 +9,7 @@ using namespace std;
 // returns array {<nthFibonacci>,<requiredSteps>}
 int * fibonacci(int number)
 {
+
 	// Bad arguments
 	if(number < 1) {
 		int * a = (int *) calloc(2, sizeof(int));

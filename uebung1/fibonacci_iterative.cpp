@@ -1,13 +1,11 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include <climits>
 
 using namespace std;
 
 
-// How to use:
-// g++ fibnoacci_iterative.cpp -o fibnoacci_iterative
-// ./fibnoacci_iterative <integer>
 #pragma region fibnoacci_iterative
 int* fibonacci(int number)
 {
@@ -56,12 +54,12 @@ int main(int argc, char * argv[])
 		cout << "Unbekannter Fehler" << endl;
 		return 1;
 	}
-	int n = std::stoi(argv[1]);
+	int n = stoi(argv[1]);
 
 	// ToDo: Exercise 1.c - print calculation steps
 
 	int * result = fibonacci(n);
-	std::cout << n << " : " << result[0] << " : " << "#" << result[1];
+	cout << n << " : " << result[0] << " : " << "#" << result[1] << endl;
 
 	free(result);
 
