@@ -46,4 +46,5 @@ I.  ((1 + 1) - 3
     eine unterschiedliche Anzahl an öffnenden und schließenden Klammern beinhaltet, kann also 
     nicht durch die oben beschriebene Grammatik erstellt werden.
 
-II. 
+II. ungültiges Beispiel
+    Buchstaben sind nicht in der Menge der Terminalsymbole enthalten.
