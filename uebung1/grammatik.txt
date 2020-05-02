@@ -10,7 +10,6 @@ Ausdruck = Ausdruck Operator Ausdruck;
 
 Ausdruck = "round(" Ausdruck ")";
 
-
 Ausdruck = Ausdruck Zwischenspeichern;
 
 Ausdruck = Zahl | Konstanten | Speicherplatz;
