@@ -1,0 +1,49 @@
+Aufgabe 1.3: Theoretische Aufgabe: Grammatik
+
+a) Erweiterte Backus Naur Form für die Taschenrechner-Grammatik
+
+STARTSYMBOL = {Ausdruck}
+
+Ausdruck = "(" Ausdruck ")"
+
+Ausdruck = Ausdruck Operator Ausdruck
+
+Ausdruck = "round(" Ausdruck ")" 
+
+
+Ausdruck = Ausdruck Zwischenspeichern
+
+Ausdruck = Zahl | Konstanten | Speicherplatz
+
+
+Speicherplatz = "M" Ziffer
+
+Zwischenspeichern = "->" Speicherplatz
+
+
+Konstanten = "pi" | "e"
+
+Operator = "+" | "-" | "*" | "/" | "^" | "%"
+
+Zahl = ["-"] (Ganzzahl | Kommazahl)
+
+Ganzzahl = "0" | (ZifferAußerNull Ganzzahl)
+
+Kommazahl = Ganzzahl "," Ganzzahl
+
+Ziffer = ZifferAußerNull | "0"
+
+ZifferAußerNull = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" 
+
+b) (((25 -> M1) / (round(3 * pi) % 6)) -> M8) + M1
+
+c)  
+I.  ((1 + 1) - 3
+    Die Terminalsymbole "(" und ")" werden nur im Schritt 
+        Ausdruck = "(" Ausdruck ")"         und
+        Ausdruck = "round(" Ausdruck ")" 
+    hinzugefügt. In beiden Fällen wird jeweils eine Klammer hinzugefügt. Ein Wort, welches
+    eine unterschiedliche Anzahl an öffnenden und schließenden Klammern beinhaltet, kann also 
+    nicht durch die oben beschriebene Grammatik erstellt werden.
+
+II. 
