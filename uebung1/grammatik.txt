@@ -6,16 +6,6 @@ Eingabe = Ausdruck
 
 Ausdruck = "(" Ausdruck ")";
 
-<<<<<<< HEAD
-Ausdruck = Ausdruck Operator Ausdruck;
-
-Ausdruck = "round(" Ausdruck ")";
-
-Ausdruck = Ausdruck Zwischenspeichern;
-
-Ausdruck = Zahl | Konstanten | Speicherplatz;
-
-=======
 Ausdruck =| Ausdruck Operator Ausdruck
 
 Ausdruck =| "round(" Ausdruck ")" 
@@ -23,26 +13,25 @@ Ausdruck =| "round(" Ausdruck ")"
 Ausdruck =| Ausdruck Zwischenspeichern
 
 Ausdruck =| Zahl | Konstanten | Speicherplatz
->>>>>>> c169986e351748c8f6b2836ba38d8b2bd55f7895
 
 Speicherplatz = "M" Ziffer;
 
 Zwischenspeichern = "->" Speicherplatz;
 
 
-Konstanten = "pi" | "e";
+Konstanten = "pi" | "e"
 
-Operator = "+" | "-" | "*" | "/" | "^" | "%";
+Operator = "+" | "-" | "*" | "/" | "^" | "%"
 
-Zahl = ["-"] (Ganzzahl | Kommazahl);
+Zahl = ["-"] (Ganzzahl | Kommazahl)
 
-Ganzzahl = "0" | (ZifferAußerNull {Ziffer});
+Ganzzahl = "0" | (ZifferAußerNull {Ziffer})
 
-Kommazahl = Ganzzahl "," {Ziffer};
+Kommazahl = Ganzzahl "," {Ziffer}
 
-Ziffer = ZifferAußerNull | "0";
+Ziffer = ZifferAußerNull | "0"
 
-ZifferAußerNull = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
+ZifferAußerNull = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
 
 b) (((-25,321 -> M1) / (round(3 * pi) % 6)) -> M8) + M1
 
