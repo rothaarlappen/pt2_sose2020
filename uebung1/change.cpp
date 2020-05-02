@@ -62,7 +62,6 @@ string getFilename(char * argv[]){
     string filename = argv[4];
     string checkString = "-o";
 
-   
     if (filename.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890_") != std::string::npos)
     {
         cerr << "Ungueltiger Dateiname. Bitte verwenden Sie keine Sonderzeichen.";
