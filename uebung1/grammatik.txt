@@ -27,9 +27,9 @@ Operator = "+" | "-" | "*" | "/" | "^" | "%"
 
 Zahl = ["-"] (Ganzzahl | Kommazahl)
 
-Ganzzahl = "0" | (ZifferAußerNull Ganzzahl)
+Ganzzahl = "0" | (ZifferAußerNull {Ziffer})
 
-Kommazahl = Ganzzahl "," Ganzzahl
+Kommazahl = Ganzzahl "," {Ziffer}
 
 Ziffer = ZifferAußerNull | "0"
 
