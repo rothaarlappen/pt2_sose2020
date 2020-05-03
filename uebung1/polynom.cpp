@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
 #include <string>
@@ -7,7 +8,7 @@
 using namespace std;
 
 #pragma region polynom
-double polynom(int x, int n, vector<int> coefficients) {
+double polynom(int x, int n, vector<double> coefficients) {
 	// ToDo: Exercise 2.b - compute value of P(x)
 	double sum = 0;
 	for(int i = 0; i <= n; i++){
@@ -17,12 +18,14 @@ double polynom(int x, int n, vector<int> coefficients) {
 }
 void prettyPrint(double decimal)
 {
-	string output = "";
-	while(decimal > 0){
-		output =  to_string((int) fmod(decimal, 1000)) + "." + output;
-		decimal = floor(decimal / 1000);
+	string output = to_string(decimal);
+
+	int integerPartIndex = output.find_first_of(".");
+
+	for(int i =	integerPartIndex - 1; i > 1; i--){
+		if(((integerPartIndex - i) % 3) == 0)
+			output.insert(i, ",");
 	}
-	output.pop_back();
 	cout << output << endl;
 }
 
@@ -35,7 +38,7 @@ int main(int argc, char* argv[])
 	}
 
 	// Exercise 1a) 
-	vector<int> coefficients;
+	vector<double> coefficients;
 
 	int x = stoi(argv[1]);
 	int n = stoi(argv[2]);
@@ -48,7 +51,7 @@ int main(int argc, char* argv[])
 		}
 
 		for (int i = 3; i < argc; i++){
-			coefficients.push_back(stoi(argv[i]));
+			coefficients.push_back(stod(argv[i]));
 		}
 
 	} catch (out_of_range){
@@ -59,11 +62,14 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+	cout << setprecision(6) << fixed;
+	
 	// ToDo: Exercise 2.b - print P(x)
-	cout << polynom(x, n, coefficients) << endl;
+	double result = polynom(x, n, coefficients);
+	cout << result << endl;
 
 	// ToDo: Exercise 2.c - print P(x) with prettyPrint
-	prettyPrint(polynom(x, n, coefficients));
+	prettyPrint(result);
 
 	return 0;
 }
