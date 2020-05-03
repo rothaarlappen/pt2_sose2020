@@ -20,17 +20,20 @@ void prettyPrint(double decimal)
 {
 	string output = to_string(decimal);
 
-	int integerPartIndex = output.find_first_of(".");
+	int commaPosition = output.find_first_of(".");
 
-	for(int i =	integerPartIndex - 1; i > 1; i--){
-		if(((integerPartIndex - i) % 3) == 0)
-			output.insert(i, ",");
+	for(int i =	commaPosition - 3; i > 1; i = i - 3){
+		output.insert(i, ",");
 	}
 	cout << output << endl;
 }
 
 int main(int argc, char* argv[])
 {
+	vector<double> coefficients;
+	int n;
+	double x;
+	cout << setprecision(6) << fixed;
 	// ToDo: Exercise 2.a - read parameters and x, deal with invalid values
 	if (argc < 3){
 		cout << "Es wird eine Eingabe der Form x, n, a0, a1, ... , aN erwartet " << endl;
@@ -38,12 +41,9 @@ int main(int argc, char* argv[])
 	}
 
 	// Exercise 1a) 
-	vector<double> coefficients;
-
-	int x = stoi(argv[1]);
-	int n = stoi(argv[2]);
-
 	try{
+		x = stod(argv[1]);
+		n = stoi(argv[2]);
 		// aN != 0
 		if(n != argc - 4){
 			cout << "Falsche Anzahl an Koeffizienten eingegeben" << endl;
@@ -53,7 +53,6 @@ int main(int argc, char* argv[])
 		for (int i = 3; i < argc; i++){
 			coefficients.push_back(stod(argv[i]));
 		}
-
 	} catch (out_of_range){
 		cout << "Die eingegebene Zahl ist zu groß. Überprüfen sie ihre Eingabe" << endl;
 		return 1;
@@ -62,8 +61,6 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	cout << setprecision(6) << fixed;
-	
 	// ToDo: Exercise 2.b - print P(x)
 	double result = polynom(x, n, coefficients);
 	cout << result << endl;
