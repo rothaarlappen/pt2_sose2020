@@ -16,8 +16,8 @@ double polynom(int x, int n, vector<double> coefficients) {
 	}
 	return sum;
 }
-void prettyPrint(double decimal)
-{
+
+void prettyPrint(double decimal){
 	string output = to_string(decimal);
 
 	int commaPosition = output.find_first_of(".");
@@ -28,8 +28,7 @@ void prettyPrint(double decimal)
 	cout << output << endl;
 }
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]){
 	vector<double> coefficients;
 	int n;
 	double x;

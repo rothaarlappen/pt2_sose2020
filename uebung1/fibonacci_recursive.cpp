@@ -7,8 +7,7 @@ using namespace std;
 
 #pragma region fibonacci_recursive
 // returns array {<nthFibonacci>,<requiredSteps>}
-int * fibonacci(int number)
-{
+int * fibonacci(int number){
 
 	// Bad arguments
 	if(number < 1) {
@@ -41,8 +40,7 @@ int * fibonacci(int number)
 	}
 
 }
-int main(int argc, char * argv[])
-{
+int main(int argc, char * argv[]){
 	if(argc != 2)
 	 	return 1;	
 

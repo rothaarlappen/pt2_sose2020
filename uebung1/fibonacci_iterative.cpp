@@ -7,8 +7,7 @@ using namespace std;
 
 
 #pragma region fibnoacci_iterative
-int* fibonacci(int number)
-{
+int* fibonacci(int number){
 	// ToDo: Exercise 1.c - count number of calculation steps
 	// ToDo: Exercise 1.b - return 0 on bad arguments
 	if(number < 1) {
@@ -38,8 +37,8 @@ int* fibonacci(int number)
 
 	return result;
 }
-int main(int argc, char * argv[])
-{
+
+int main(int argc, char * argv[]){
 	if(argc != 2)
 	 	return 1;	
 	try{

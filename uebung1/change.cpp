@@ -10,8 +10,17 @@ using namespace std;
 // g++ change.cpp -o change
 // ./change <positive_int_due> <positive_int_paid> [-o <filename>]
 #pragma region helperFunction
-vector<pair<int, int>> computeChange(const int due, const int paid)
-{
+
+// übernommen von https://thispointer.com/c-how-to-check-if-a-string-ends-with-an-another-given-string/
+bool endsWith(const string &mainStr, const string &toMatch){
+	if(mainStr.size() >= toMatch.size() &&
+			mainStr.compare(mainStr.size() - toMatch.size(), toMatch.size(), toMatch) == 0)
+			return true;
+		else
+			return false;
+}
+
+vector<pair<int, int>> computeChange(const int due, const int paid){
 	// ToDo: compute and print set of change tuples
 	int change = paid - due;
 
@@ -62,9 +71,9 @@ string getFilename(char * argv[]){
     string filename = argv[4];
     string checkString = "-o";
 
-    if (filename.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890_") != std::string::npos)
+    if (filename.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890_") != string::npos)
     {
-        cerr << "Ungueltiger Dateiname. Bitte verwenden Sie keine Sonderzeichen.";
+        cerr << "Ungueltiger Dateiname. Bitte verwenden Sie keine Sonderzeichen und geben Sie den Datentyp nicht an (.txt).";
         return "";
     }
     if(!(checkString.compare(argv[3]) == 0)){
@@ -77,19 +86,10 @@ string getFilename(char * argv[]){
     }
     return filename;
 }
-// übernommen von https://thispointer.com/c-how-to-check-if-a-string-ends-with-an-another-given-string/
-bool endsWith(const std::string &mainStr, const std::string &toMatch)
-{
-	if(mainStr.size() >= toMatch.size() &&
-			mainStr.compare(mainStr.size() - toMatch.size(), toMatch.size(), toMatch) == 0)
-			return true;
-		else
-			return false;
-}
+
 #pragma endregion helperFunction
 #pragma region main
-int main(int argc, char * argv[])
-{
+int main(int argc, char * argv[]){
 	vector<pair<int,int>> changeVector;
 	int due;
 	int paid; 
@@ -98,20 +98,26 @@ int main(int argc, char * argv[])
 		cout << "Ungültige Anzahl an Parametern. Bitte überprüfen sie ihre Eingabe" << endl;
 
 	try{
-		due = std::stoi(argv[1]);
-		paid = std::stoi(argv[2]);
+		due = stoi(argv[1]);
+		paid = stoi(argv[2]);
 	} catch (out_of_range){
 		cout << "Die eingegebene Zahl ist zu groß. Überprüfen sie ihre Eingabe" << endl;
 		return 1;
 	} catch (invalid_argument){
 		cout << "Bei den eingegebenen Parametern handelt es sich nicht um Zahlen" << endl;
 		return 1;
+	} catch (...){
+		cout << "Die eingegebenen Parameter sind fehlerhaft." << endl;
+		return 1;
 	}
 
     if(due < 0 || paid < 0){
         cout << "Ungueltige Eingabe." << endl;
         return 1;
-    }
+    }else if(due > paid){
+		cout << "Der bezahlte Betrag ist kleiner als der zu tilgende. Parameter vertauscht?" << endl;
+		return 1;
+	}
 
 	changeVector =  computeChange(due, paid);
 	
