@@ -4,18 +4,26 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include <cfloat>
 
 using namespace std;
 
 #pragma region polynom
+bool Checkflow(double value , double variable){
+	return (variable > 0) ? (value > DBL_MAX - variable) : (value < DBL_MIN - variable);
+};
+
 double polynom(int x, int n, vector<double> coefficients) {
 	// ToDo: Exercise 2.b - compute value of P(x)
 	double sum = 0;
 	for(int i = 0; i <= n; i++){
-		sum += pow(x, i) * coefficients[i];
+		double summand = pow(x, i) * coefficients[i];
+		if(Checkflow(sum, summand))
+			throw overflow_error("shit happens");
+		sum += summand;
 	}
 	return sum;
-}
+};
 
 void prettyPrint(double decimal){
 	string output = to_string(decimal);
@@ -61,12 +69,17 @@ int main(int argc, char* argv[]){
 	}
 
 	// ToDo: Exercise 2.b - print P(x)
-	double result = polynom(x, n, coefficients);
-	cout << result << endl;
-
-	// ToDo: Exercise 2.c - print P(x) with prettyPrint
-	prettyPrint(result);
+	try{
+		double result = polynom(x, n, coefficients);
+		cout << result << endl;
+		// ToDo: Exercise 2.c - print P(x) with prettyPrint
+		prettyPrint(result);
+	}catch(overflow_error){
+		cout << "Overflow" << endl;
+		return 1;
+	}
+	
 
 	return 0;
-}
+};
 #pragma endregion polynom

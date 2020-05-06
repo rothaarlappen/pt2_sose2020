@@ -18,7 +18,7 @@ int * fibonacci(int number){
 	if(number <= 2) {
 		int * a = (int *) malloc(2);
 		// first and second fibonacci equal 1. 1 step (functioncall) required.
-		// frag mal Fabian wie das hier aussieht... ist halt gleichzusetzen mit 1 = 1 + 0 (deswegen schon 1 step)
+
 		a[0] = 1;
 		a[1] = 1;
 		return a;
