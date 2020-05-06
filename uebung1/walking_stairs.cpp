@@ -7,7 +7,7 @@ using namespace std;
 
 
 #pragma region walking_stairs
-// O(1) - 
+
 uint64_t combinations(int number){	
 	uint64_t result = 1;
 	uint64_t previous = 1;
