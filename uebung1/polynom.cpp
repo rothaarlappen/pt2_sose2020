@@ -9,28 +9,28 @@
 using namespace std;
 
 #pragma region polynom
-bool Checkflow(double value , double variable){
-	return (variable > 0) ? (value > DBL_MAX - variable) : (value < DBL_MIN - variable);
-};
+bool CheckForOverflow(double firstSummand, double secondSummand){
+	return (secondSummand > 0) ? (firstSummand > DBL_MAX - secondSummand) : (firstSummand < DBL_MIN - secondSummand);
+}
 
 double polynom(int x, int n, vector<double> coefficients) {
 	// ToDo: Exercise 2.b - compute value of P(x)
 	double sum = 0;
 	for(int i = 0; i <= n; i++){
 		double summand = pow(x, i) * coefficients[i];
-		if(Checkflow(sum, summand))
+		if(CheckForOverflow(sum, summand))
 			throw overflow_error("shit happens");
 		sum += summand;
 	}
 	return sum;
-};
+}
 
 void prettyPrint(double decimal){
 	string output = to_string(decimal);
 
 	int commaPosition = output.find_first_of(".");
 
-	for(int i =	commaPosition - 3; i > 1; i = i - 3){
+	for(int i =	commaPosition - 3; i > 0; i = i - 3){
 		output.insert(i, ",");
 	}
 	cout << output << endl;
