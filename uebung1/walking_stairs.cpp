@@ -1,24 +1,28 @@
 #include <cstdlib>
 #include <iostream>
-#include <string>
 #include <cmath>
-
-#define DividedBy /
-#define minus - 
-#define plus +
-#define times *
+#include <cstdint> 
 
 using namespace std;
 
+
 #pragma region walking_stairs
 // O(1) - 
-double combinations(double number){	
-	double tempN = number + 1;
-	double result;
-	double half = 0.5;
-	double rootOfFive = pow(5, half);
+uint64_t combinations(int number){	
+	uint64_t result = 1;
+	uint64_t previous = 1;
+	uint64_t preprevious = 0;
 
-	result = (1 DividedBy rootOfFive) times (pow(((1 plus rootOfFive) DividedBy 2), tempN) minus pow(((1 minus rootOfFive) DividedBy 2), tempN));
+	if(number == 0)
+		return 0;
+	if(number == 1)
+		return 1;
+
+	for(int i = 2; i < number + 1; i++){
+		preprevious = previous;
+		previous = result;
+		result = previous + preprevious;
+	}
 	
 	return result;
 }
@@ -28,8 +32,8 @@ int main(int argc, char * argv[]){
 		return 1;	// invalid number of parameters
 
 	try{
-		double n = std::stoi(argv[1]);
-		std::cout << combinations(n);
+		int n = stoi(argv[1]);
+		cout << combinations(n) << endl;
 	} catch (out_of_range){
 		cout << "Die eingegebene Zahl ist zu groß. Überprüfen sie ihre Eingabe" << endl;
 		return 1;
