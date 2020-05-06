@@ -12,7 +12,8 @@ uint64_t combinations(int number){
 	uint64_t result = 1;
 	uint64_t previous = 1;
 	uint64_t preprevious = 0;
-
+	
+	
 	if(number == 0)
 		return 0;
 	if(number == 1)
@@ -21,6 +22,9 @@ uint64_t combinations(int number){
 	for(int i = 2; i < number + 1; i++){
 		preprevious = previous;
 		previous = result;
+		// check for Overflow:
+		if ( previous > UINT64_MAX - preprevious)
+			throw overflow_error("shit happens");
 		result = previous + preprevious;
 	}
 	
@@ -39,6 +43,9 @@ int main(int argc, char * argv[]){
 		return 1;
 	} catch (invalid_argument){
 		cout << "Bei den eingegebenen Parametern handelt es sich nicht um Zahlen" << endl;
+		return 1;
+	} catch (overflow_error){
+		cout << "Overflow occured" << endl;
 		return 1;
 	}
 
