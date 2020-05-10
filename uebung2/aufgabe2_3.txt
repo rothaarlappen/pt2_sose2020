@@ -1,0 +1,10 @@
+Aufgabe 2.3 - Reguläre Ausdrücke
+Benutzer RegEx-Tester: http://regexstorm.net/tester (C#-Kontext, da kein RegEx-Tester vorgeschrieben)
+
+Vorname:        [A-Z][a-zßäöü]*([-|\s][A-Z][a-zßäöü])?       // Also Leute mit Dreifachnamen werde hier ganz bewusst
+                                                        // nicht akzeptiert. Wer denkt sich so ne Scheiße aus wie "Peter-Philip-Theodor"
+Nachname:       von?(\s)[A-Z][a-zßäöü]*
+Straße:         
+Hausnummer:     [1-9]\d*[a-z]?(-[1-9]\d*[a-z]?)?
+Postleitzahl:   [\d]{5}
+Ort:            [A-Z][a-z]*   
