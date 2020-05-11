@@ -59,19 +59,30 @@ std::string stepExtended(std::string state, int value)
 	// TODO: Handle all possible states and values and return the respective new state
 	// Note: Accepted coin values are {10, 20, 50}. Accepted drink selection values are {1, 2, 3}.
 	switch(stoi(state)){
+		case 0:
+			return to_string(value);
 		case 1: 
 			switch (value){
 				case 0: return state;
-				default: return to_string(value);
+				case 10: return "110";
+				case 20: return "120";
+				case 50: return dispense;
+				default: break;
 			}
 		case 2:
 			switch (value){
 				case 0: return state;
+				case 10: return "210";
+				case 20: return "220";
+				case 50: return "250";
 				default: return to_string(value);
 			}
 		case 3:
 			switch (value){
 				case 0: return state;
+				case 10: return "310";
+				case 20: return "320";
+				case 50: return "350";
 				default: return to_string(value);
 			}
 		case 110:
@@ -129,6 +140,59 @@ std::string stepExtended(std::string state, int value)
 				default: return dispense;
 			}
 		case 270:
+			return dispense;
+		case 310:
+			switch(value){
+				case (10): return "320";
+				case (20): return "330";
+				case (50): return "360";
+				default: return "error";
+			}
+		case 320:
+			switch(value){
+				case (10): return "330";
+				case (20): return "340";
+				case (50): return "370";
+				default: return "error";
+			}
+		case 330:
+			switch(value){
+				case (10): return "340";
+				case (20): return "350";
+				case (50): return "380";
+				default: return "error";
+			}
+		case 340:
+			switch(value){
+				case (10): return "350";
+				case (20): return "360";
+				case (50): return "390";
+				default: return "error";
+			}
+		case 350:
+			switch(value){
+				case (10): return "360";
+				case (20): return "370";
+				default: return dispense;
+			}
+		case 360:
+			switch(value){
+				case (10): return "370";
+				case (20): return "380";
+				default: return dispense;
+			}
+		case 370:
+			switch(value){
+				case (10): return "380";
+				case (20): return "390";
+				default: return dispense;
+			}
+		case 380:
+			switch(value){
+				case (10): return "390";
+				default: return dispense;
+			}
+		case 390:
 			return dispense;
 
 	}
