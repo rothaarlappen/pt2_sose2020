@@ -58,12 +58,17 @@ std::string stepExtended(std::string state, int value)
 	string dispense = "dispense";
 	// TODO: Handle all possible states and values and return the respective new state
 	// Note: Accepted coin values are {10, 20, 50}. Accepted drink selection values are {1, 2, 3}.
+	cout << "state:" << state << " value:" << value << endl;
 	switch(stoi(state)){
 		case 0:
-			return to_string(value);
+			switch(value){
+				case (1): return "1";
+				case (2): return "2";
+				case (3): return "3";
+				default : break;
+			}
 		case 1: 
 			switch (value){
-				case 0: return state;
 				case 10: return "110";
 				case 20: return "120";
 				case 50: return dispense;
@@ -71,7 +76,6 @@ std::string stepExtended(std::string state, int value)
 			}
 		case 2:
 			switch (value){
-				case 0: return state;
 				case 10: return "210";
 				case 20: return "220";
 				case 50: return "250";
@@ -79,7 +83,6 @@ std::string stepExtended(std::string state, int value)
 			}
 		case 3:
 			switch (value){
-				case 0: return state;
 				case 10: return "310";
 				case 20: return "320";
 				case 50: return "350";
@@ -90,20 +93,29 @@ std::string stepExtended(std::string state, int value)
 				case (10): return "120";
 				case (20): return "130";
 				case (50): return dispense;
+				default: break;
 			}
 		case 120:
 			switch (value){
 				case (10): return "130";
 				case (20): return "140";
 				case (50): return dispense;
+				default: break;
 			}
 		case 130:
 			switch (value){
 				case (10): return "140";
-				default: return dispense;
+				case (20): return dispense;
+				case (50): return dispense;
+				default: break;
 			}
 		case 140:
-			return dispense;
+			switch(value){
+				case (10): return dispense;
+				case (20): return dispense;
+				case (50): return dispense;
+				default: break;
+			}
 		case 210:
 			switch(value){
 				case (10): return "220";
@@ -122,27 +134,37 @@ std::string stepExtended(std::string state, int value)
 			switch(value){
 				case (10): return "240";
 				case (20): return "250";
-				default: dispense;
+				case (50): return dispense;
+				default: break;
 			}
 		case 240:
 			switch(value){
 				case (10): return "250";
 				case (20): return "260";
-				default: dispense;
+				case (50): return dispense;
+				default: break;
 			}
 		case 250:
 			switch(value){
 				case (10): return "260";
 				case (20): return "270";
-				default: dispense;
+				case (50): return dispense;
+				default: break;
 			}
 		case 260:
 			switch(value){
 				case (10): return "270";
-				default: return dispense;
+				case (20): return dispense;
+				case (50): return dispense;
+				default: break;
 			}
 		case 270:
-			return dispense;
+			switch(value){
+				case (10): return dispense;
+				case (20): return dispense;
+				case (50): return dispense;
+				default: break;
+			}
 		case 310:
 			switch(value){
 				case (10): return "320";
@@ -175,28 +197,38 @@ std::string stepExtended(std::string state, int value)
 			switch(value){
 				case (10): return "360";
 				case (20): return "370";
-				default: return dispense;
+				case (50): return dispense;
+				default: break;
 			}
 		case 360:
 			switch(value){
 				case (10): return "370";
 				case (20): return "380";
-				default: return dispense;
+				case (50): return dispense;
+				default: break;
 			}
 		case 370:
 			switch(value){
 				case (10): return "380";
 				case (20): return "390";
-				default: return dispense;
+				case (50): return dispense;
+				default: break;
 			}
 		case 380:
 			switch(value){
 				case (10): return "390";
-				default: return dispense;
+				case (20): return dispense;
+				case (50): return dispense;
+				default: break;
 			}
 		case 390:
-			return dispense;
-
+			switch(value){
+				case (10): return dispense;
+				case (20): return dispense;
+				case (50): return dispense;
+				default: break;
+			}
+		default: break;
 	}
 
 	// for all states and inputs which are not handled above show a message and return original state
