@@ -1,14 +1,14 @@
 Aufgabe 2.3 - Reguläre Ausdrücke
 Benutzer RegEx-Tester: http://regexstorm.net/tester (C#-Kontext, da kein RegEx-Tester vorgeschrieben)
 
-Vorname:        [A-Z][a-zßäöü]*([-|\s][A-Z][a-zßäöü])?          // Also Leute mit Dreifachnamen werde hier ganz bewusst
+Vorname:        ^[A-Z][a-zßäöü]*([-|\s][A-Z][a-zßäöü])?$          // Also Leute mit Dreifachnamen werde hier ganz bewusst
                                                                 // nicht akzeptiert. Wer denkt sich so ne Scheiße aus wie "Peter-Philip-Theodor"
 
-Nachname:       (von(\s))?[A-Z][a-zßäöü]*([-|\s][A-Z][a-zßäöü])?           "von " ist fakultativ. Danach muss ein Großbuchstabe folgen und ein paar kleinbuchstaben. Doppelnamen durch                   
+Nachname:       ^(von(\s))?[A-Z][a-zßäöü]*([-|\s][A-Z][a-zßäöü])?$          "von " ist fakultativ. Danach muss ein Großbuchstabe folgen und ein paar kleinbuchstaben. Doppelnamen durch                   
 
 
 
-Straße:         ((([A-ZÖÄÜ][a-zäöüß]+)\s?)*)(.?-((([A-ZÖÄÜ][a-zäöüß]+)\s?)*))*.?    
+Straße:         ^((([A-ZÖÄÜ][a-zäöüß]+)\s?)*)(.?-((([A-ZÖÄÜ][a-zäöüß]+)\s?)*))*.?$  
 
 
 Müllerstr.
@@ -17,10 +17,10 @@ Wilhelmstraße
 Deine Mamastr.
 
 
-Hausnummer:     [1-9]\d*[a-z]?(-[1-9]\d*[a-z]?)?
+Hausnummer:     ^[1-9]\d{0,3}[a-z]?(-[1-9]\d{0,3}[a-z]?)?$
 
 
-Postleitzahl:   [\d]{5}
+Postleitzahl:   ^[\d]{5}$
 
 
-Ort:            [A-Z][a-z]*   // nicht fertig
+Ort:            ^[A-Z][a-z]*$   // nicht fertig
