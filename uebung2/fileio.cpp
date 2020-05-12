@@ -46,12 +46,20 @@ bool isValueCorrect(const std::string &teststring, const int &column)
 
 	switch (column)
 	{
-
-		case 1:
-			regExp = "[a-zA-Z]+";
+		// ICAO
+		case 4:
+			//regExp = "[a-zA-Z]+";
+			regExp = "[A-Z0-9]{3,4}";
 			break;
-
-
+		// Altitude
+		case 8:
+			regExp = "[012]{1}[0-9]{0,4}";
+			break;
+		// DST
+		case 10:
+			regExp = "[EASOZNU]{1}";
+			break;
+		// other column
 		default:
 			regExp = ".*";
 			break;
@@ -71,12 +79,14 @@ void readTokensAndLines(char* path)
 		vector<string> parts = splitString(line, ';');
 		
 		columns name = NAME;
-		columns timeZoen = TIMEZONE_LONG;
-		cout << parts[name] << '-' << parts[timeZoen] << endl;
+		columns timeZone = TIMEZONE_LONG;
+		cout << parts[name] << '-' << parts[timeZone] << endl;
 		// TODO: - Split line and write result to std::cout
 		//       - Check each part of line with isValueCorrect and log if values are not supported
 		//       - Use and extend isValueCorrect function for this
+		for (auto const&: ){
 
+		}
 		//std::cout << linestream << std::endl;
 	}
 
