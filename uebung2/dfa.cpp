@@ -75,7 +75,7 @@ std::string stepExtended(std::string state, int value)
 				case 10: return "210";
 				case 20: return "220";
 				case 50: return "250";
-				default: return to_string(value);
+				default: break;
 			}
 		case 3:
 			switch (value){
@@ -83,7 +83,7 @@ std::string stepExtended(std::string state, int value)
 				case 10: return "310";
 				case 20: return "320";
 				case 50: return "350";
-				default: return to_string(value);
+				default: break;
 			}
 		case 110:
 			switch (value){
@@ -109,12 +109,14 @@ std::string stepExtended(std::string state, int value)
 				case (10): return "220";
 				case (20): return "230";
 				case (50): return "260";
+				default: break;
 			}
 		case 220:
 			switch(value){
 				case (10): return "230";
 				case (20): return "240";
 				case (50): return "270";
+				default: break;
 			}
 		case 230:
 			switch(value){
@@ -146,28 +148,28 @@ std::string stepExtended(std::string state, int value)
 				case (10): return "320";
 				case (20): return "330";
 				case (50): return "360";
-				default: return "error";
+				default: break;
 			}
 		case 320:
 			switch(value){
 				case (10): return "330";
 				case (20): return "340";
 				case (50): return "370";
-				default: return "error";
+				default: break;
 			}
 		case 330:
 			switch(value){
 				case (10): return "340";
 				case (20): return "350";
 				case (50): return "380";
-				default: return "error";
+				default: break;
 			}
 		case 340:
 			switch(value){
 				case (10): return "350";
 				case (20): return "360";
 				case (50): return "390";
-				default: return "error";
+				default: break;
 			}
 		case 350:
 			switch(value){

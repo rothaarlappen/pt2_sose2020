@@ -17,18 +17,25 @@ enum columns {
 	ICAO_CODE,		// International Civil Aviation Organization
 	LATITUDE,
 	LONGITUDE,
-	DONT_KNOW,
-	BOOL_WHATEVER,
+	ALTITUDE,
+	UTC_OFFSET,
 	TIMEZONE_SHORT,
 	TIMEZONE_LONG,
 };
 
 vector<string> splitString(string toBeSplitted, char byChar){
 	vector <string> parts;
-	while(toBeSplitted.find_first_of(byChar) != string::npos){
-		
-	}
-
+    while(toBeSplitted.size()){
+        int index = toBeSplitted.find(byChar);
+        if(index!=string::npos){
+            parts.push_back(toBeSplitted.substr(0,index));
+            toBeSplitted = toBeSplitted.substr(index+1);
+            if(toBeSplitted.size()==0)parts.push_back(toBeSplitted);
+        }else{
+            parts.push_back(toBeSplitted);
+            toBeSplitted = "";
+        }
+    }
 	return parts;
 }
 
@@ -39,12 +46,11 @@ bool isValueCorrect(const std::string &teststring, const int &column)
 
 	switch (column)
 	{
-		// example regExp for column 1
-		/*case 1:
-			regExp = "[a-zA-Z]+";
-			break;*/
 
-		// TODO: implement cases for other columns
+		case 1:
+			regExp = "[a-zA-Z]+";
+			break;
+
 
 		default:
 			regExp = ".*";
@@ -62,8 +68,11 @@ void readTokensAndLines(char* path)
 	while (std::getline(file, line)) {
 		std::istringstream linestream;
 		linestream.str(line);
-		//cout << line << endl;
-
+		vector<string> parts = splitString(line, ';');
+		
+		columns name = NAME;
+		columns timeZoen = TIMEZONE_LONG;
+		cout << parts[name] << '-' << parts[timeZoen] << endl;
 		// TODO: - Split line and write result to std::cout
 		//       - Check each part of line with isValueCorrect and log if values are not supported
 		//       - Use and extend isValueCorrect function for this
