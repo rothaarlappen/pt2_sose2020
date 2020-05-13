@@ -1,26 +1,67 @@
 Aufgabe 2.3 - Reguläre Ausdrücke
 Benutzer RegEx-Tester: http://regexstorm.net/tester (C#-Kontext, da kein RegEx-Tester vorgeschrieben)
 
-Vorname:        ^[A-Z][a-zßäöü]*([-|\s][A-Z][a-zßäöü])?$          // Also Leute mit Dreifachnamen werde hier ganz bewusst
-                                                                // nicht akzeptiert. Wer denkt sich so ne Scheiße aus wie "Peter-Philip-Theodor"
-
-Nachname:       ^(von(\s))?[A-Z][a-zßäöü]*([-|\s][A-Z][a-zßäöü])?$          "von " ist fakultativ. Danach muss ein Großbuchstabe folgen und ein paar kleinbuchstaben. Doppelnamen durch                   
-
-
-
-Straße:         ^((([A-ZÖÄÜ][a-zäöüß]+)\s?)*)(.?-((([A-ZÖÄÜ][a-zäöüß]+)\s?)*))*.?$  
-
-
-Müllerstr.
-Prof-Dr.-Heisestr.
-Wilhelmstraße
-Deine Mamastr.
+Vorname:        ^[A-ZZÄÖÜ][a-zßäöü]+([\\-|\\s][A-Z][a-zßäöü]*){0,3}$     
+                Jeder Vorname beginnt mit einem Großen Buchstaben [A-ZÄÖÜ],
+                gefolgt von einer mindestens eins langen Folge von kleinen Buchstaben [a-zßäöü]+
+                Ein Vorname darf also nur 2 Buchstaben lang sein (Googlerecherche ergab, dass "Ax" und "Bo" deutsche Namen sind
+                und auch einige Chinesische Vornamen nur 2 Buchstaben lang sind.)
+                Gefolgt ist dieser erste Name dann maximal 3 weiteren "Zweitnamen", die entweder mit einem Bindestrich oder 
+                einem Leerzeichen Verknüpft sind [\\-|\\s]
+                
+                Gerd-Paul / Paul / Gerd Paul werden demnach erkannt
+                GERD Paul jedoch nicht, da hier mehrere Großbuchstaben aufeinander folgen.
 
 
-Hausnummer:     ^[1-9]\d{0,3}[a-z]?(-[1-9]\d{0,3}[a-z]?)?$
+Nachname:       ^((von|vom|zum)\\s)?[A-Z][a-z]+((\\s|\\-)[A-ZÄÖÜ][a-zäöüß]+)?$       
+                von, zum und vom sind erlaubte Präposistionen, von denen eins           (von|vom|zum)
+                gefolgt von einem Leerzeichen                                           \\s
+                vor dem eigentlichen Namen stehen darf                                  ?
+                Daraufhin folgt wie bei den Vornamen ein string, der mit großem 
+                Buchstaben beginnt,                                                     [A-Z][a-z]+
+                diesmal gefolgt von nur einem "Doppelnamen"                             ?
+
+                Schmidt-Meier / Schmidt / von Münchhausen  werden demnach erkannt
+                "Beim Fernseh Gucken" wird nicht erkannt, da "Beim" keine gültige Präposistion
+                ist und wir auch nur "Doppelnamen" erlaubt, keine dreifachen. 
+
+Straße:         ^([A-ZÖÄÜ][a-zäöüß]+)((\\s|\\.?\\-)(([A-ZÖÄÜ][a-zäöüß]+)))*.?$
+                Ein Teil des Straßennames ist prinzipiell so aufgebaut wie wir es schon von Vor- und Nachnamen kennen:          ([A-ZÖÄÜ][a-zäöüß]+)
+                Darauf folgt nun beliebig häufig ein weiterer Teil, der immer eingeleitet wird von einem " ", ".-" oder nur "-" (\\s|\\.?\\-)
+                Am Ende darf noch ein . stehen wie in "Müllerstr."
+                Prof.-Dr.-Helmert-Str. / Musterstraße / Musterstr. / Am Häuschen werden demnach erkannt
+                Prof .-Straße wird nicht erkannt, da zwischen zwei Teilen des Straßennamens entweder " " oder ".-" oder "-" stehen dürfen und nicht
+                " .-"
+
+Hausnummer:     ^[1-9]\\d{0,3}[a-z]?(\\-[1-9]\\d{0,3}[a-z]?)?$
+                Da keine Hausnummer mit 0 beginnt, muss das erste Zeichen eine Zahl zwischen 
+                1 und 9 sein                                                                    [1-9]
+                darauf folgt eine 0-3 lange Folge aus weiteren Ziffern                          \\d{0,3}
+                -> größte Hausnummer in Deutschland ist 4-Stellig
+                gefolgt von einem Buchstaben                                                    [a-z]?
+                Danach kann ein "-" und eine weitere Hausnummer folgen, um einen 
+                Hausnummerbereich anzugeben (3a-4c)                                             (\\-[1-9]\\d{0,3}[a-z]?)?
+                159 / 2a / 2a-4c werden demanch akzeptiert
+                16000 wird zum Beispiel nicht akzeptiert, da eine Hausnummer maximal 4 Stellen haben darf.         
 
 
-Postleitzahl:   ^[\d]{5}$
+Postleitzahl:   ^[\\d]{5}$
+                Die Postleitzahlen in Deutschland gehen von 01067 bis 99998. Es macht unserer Meinung nach wenig Sinn,
+                den RegEx so abzuändern, dass er noch überprüft "Wenn erste Stelle Null, dann soll zweite Stelle nicht auch null sein"
+                Ein RegEx soll die Syntax und nicht die Semantik prüfen. (Hätten die Postleitzahlen nie mit "0" begonnen hätte man aber 
+                ähnlich wie bei den Hausnummern [1-9]\\d{4} schreiben können.)
 
+                Der RegEx akzeptiert nun eingegebene Zahlen                             [\\d] 
+                und zwar von Wortanfang bis Wortende genau 5 Stück hintereinander       {5}
+                12345 / 98765 / 18769 werden demnach akzeptiert
+                123456 nicht, da dies 6 aufeinanderfolgende Zahlen sind.
+                -> ^$ sind hier wichtig, da sonst 2 Matches erkannt worden wären. 
 
-Ort:            ^[A-Z][a-z]*$   // nicht fertig
+Ort:            ^[A-ZÄÖÜ][a-zäöüß]+( am| an der)?((\\s|\\-)[A-Zäöü][a-zäöüß]+)*$
+                Zuerst kommt der Standardteil aus Groß- und Kleinbuchstaben                 [A-ZÄÖÜ][a-zäöüß]+
+                Daraufhin kann ein " am" oder " an der" wie in "Frankfurt am Main" folgen   ( am| an der)?
+                und danach dann entweder mit Leerzeichen oder Bindestrich getrennt beliebig 
+                viele nächste Teile                                                         ((\\s|\\-)[A-Zäöü][a-zäöüß]+)*
+
+                Bad Gottleuba-Berggießhübel / Berlin / Frankfurt am Main werden dadurch erkannt
+                Berlin030 wird nicht gematched, da keine Zahlen erlaubt sind. 
