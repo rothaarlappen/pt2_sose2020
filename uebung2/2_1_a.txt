@@ -1,0 +1,5 @@
+a) 
+Die Variable xi in "LOOP xi DO P END" gibt an wie oft das Programm P ausgeführt werden soll. 
+xi ist endlich.  Das Programm P läuft also endlich oft durch und terminiert somit.
+Im Programm selbst kann auch nur eine endliche Menge an weiteren Programmaufrufen geschehen, die alle 
+selbst endlich sind, also terminieren, da ebenfalls LOOP-Programme. 

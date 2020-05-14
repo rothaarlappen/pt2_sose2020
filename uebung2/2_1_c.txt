@@ -1,0 +1,13 @@
+
+c)
+            x1 = e;             // Zuweisung einer Konstanten (prinzipiell äquivalent zu Anzahl der Schleifendurchläufe)
+            LOOP x1 DO P END
+
+wird umgeformt zu 
+
+            x1 = e;
+            WHILE x1 != 0 
+                DO 
+                    P
+                    x1 := x1 - 1
+            END 
