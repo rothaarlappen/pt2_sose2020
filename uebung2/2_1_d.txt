@@ -1,0 +1,59 @@
+d)
+i)      x + y
+            x1 := x;
+            x2 := y;
+            WHILE x2 != 0
+                DO
+                x1 := x1 + 1
+                x2 := x2 - 1
+            END
+x1 enthält das Ergebnis
+
+
+ii)     x * y
+            x1 := y;
+            x2 := x;
+            x3 := 0;
+            x4 := x;
+            WHILE x1 != 0
+                DO
+                WHILE x2 != 0           // Addition von x2 zu x3
+                    DO
+                    x3 := x3 + 1;
+                    x2 := x2 - 1 
+                END
+                x2 := x4 + 0;           // x2 wird danach erneut mit dem Wert von x beschrieben
+                x1 := x1 - 1            // und x1 wird um eins reduziert
+            END
+x3 enthält das Ergebnis
+
+
+iii)    x ^ y
+            
+            x1 = x;
+            x2 = x;
+            x3 = x;
+            x6 = x;
+            x5 = 0;
+            y1 = y;
+
+            WHILE y1 != 0
+                DO 
+                WHILE x1 != 0
+                    DO
+                    WHILE x2 != 0
+                        DO
+                        x5 := x5 + 1;
+                        x2 := x2 - 1 
+                    END
+                    x2 := x6 + 0;          
+                    x1 := x1 - 1           
+                END
+                x1 = x3 + 0;
+                x2 = x5 + 0;
+                x6 = x5 + 0;
+                y1 = y1 - 1;
+            END
+
+Ergebnis steht in x5.
+

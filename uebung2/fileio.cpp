@@ -9,8 +9,8 @@ using namespace std;
 // 343;"Tempelhof";"Berlin";"Germany";"THF";"EDDI";52.473025;13.403944;167;1;"E";"Europe/Berlin"
 // 
 enum columns {
-	NUMBER,
-	NAME,
+	NUMBER, 
+	NAME, 
 	TOWN,
 	COUNTRY,
 	IATA_CODE,		// International Air Transport Association
@@ -40,7 +40,7 @@ vector<string> splitString(string toBeSplitted, char byChar){
 }
 
 
-bool isValueCorrect(const std::string &teststring, const int &column)
+bool isValueCorrect(const std::string &teststring, columns &column)
 {
 	std::regex regExp;
 
@@ -80,9 +80,8 @@ void readTokensAndLines(char* path)
 		// TODO: - Split line and write result to std::cout
 		//       - Check each part of line with isValueCorrect and log if values are not supported
 		//       - Use and extend isValueCorrect function for this
-		for (auto const&: ){
 
-		}
+
 		//std::cout << linestream << std::endl;
 	}
 
