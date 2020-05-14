@@ -40,6 +40,12 @@ vector<string> splitString(string toBeSplitted, char byChar){
 	return parts;
 }
 
+string stripString(string toBeStripped){
+	if(toBeStripped.front() == '"' && toBeStripped.back() == '"' && toBeStripped.size() >= 2){
+		toBeStripped = toBeStripped.substr(1, toBeStripped.size() - 2);
+	}
+	return toBeStripped;
+}
 
 string isValueCorrect(const std::string &teststring, columns &column)
 {
@@ -48,11 +54,11 @@ string isValueCorrect(const std::string &teststring, columns &column)
 	switch (column)
 	{
 		case ICAO_CODE:
-			regExp = "[A-Z0-9]{3,4}";
+			regExp = "[A-Z0-9]{3,4}|^$";
 			error_msg = "Der ICAO Code ist fehlerhaft.";
 			break;
 		case ALTITUDE:
-			regExp = "[012]{1}[0-9]{0,4}";
+			regExp = "[012]?[0-9]{0,4}";
 			error_msg = "Die Altitude ist fehlerhaft.";
 			break;
 		case DST:
@@ -65,7 +71,11 @@ string isValueCorrect(const std::string &teststring, columns &column)
 			error_msg = "Something went wrong.";
 			break;
 	}
-	return (regex_match(teststring, regExp)) ? "" : error_msg;  
+	if(!regex_match(string(teststring), regExp)){
+		return error_msg;
+	}
+	return "";
+	//return (regex_match(teststring, regExp)) ? "" : error_msg;  
 }
 
 void readTokensAndLines(char* path)
@@ -77,7 +87,7 @@ void readTokensAndLines(char* path)
 		std::istringstream linestream;
 		linestream.str(line);
 		vector<string> parts = splitString(line, ';');
-		
+
 		columns name = NAME;
 		columns timeZone = TIMEZONE_LONG;
 		// cout << parts[name] << '-' << parts[timeZone] << endl;
@@ -87,10 +97,10 @@ void readTokensAndLines(char* path)
 
 		// checking every Column:
 		columns column = NUMBER;
-		for(; column < 12;){
-			if(isValueCorrect(parts[column], column) != ""){
-				//write some Code to print out into file
-				cout << isValueCorrect(parts[column], column) << "line: " << lineCounter <<  "content: " << parts[column] << endl;
+		for(; column < parts.size();){
+			if(isValueCorrect(stripString(parts[column]), column) != ""){
+
+				cout << isValueCorrect(stripString(parts[column]), column) << " line: " << lineCounter <<  " content: " << parts[column] << endl;
 			}
 
 			column = columns((int(column) + 1));
