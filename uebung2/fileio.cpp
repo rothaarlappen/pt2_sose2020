@@ -83,6 +83,10 @@ void readTokensAndLines(char* path)
 	std::ifstream file(path);
 	std::string parsed, line;
 	int lineCounter = 0;
+
+	ofstream logfile;
+	logfile.open ("fileio.log");
+
 	while (std::getline(file, line)) {
 		std::istringstream linestream;
 		linestream.str(line);
@@ -97,18 +101,24 @@ void readTokensAndLines(char* path)
 
 		// checking every Column:
 		columns column = NUMBER;
+		vector<string> errorlist;
 		for(; column < parts.size();){
 			if(isValueCorrect(stripString(parts[column]), column) != ""){
-
-				cout << isValueCorrect(stripString(parts[column]), column) << " line: " << lineCounter <<  " content: " << parts[column] << endl;
+				errorlist.push_back(isValueCorrect(stripString(parts[column]), column));
 			}
-
 			column = columns((int(column) + 1));
 		}
 		
+		// check if errors have been found and write them into file:
+		if(errorlist.size()>0){
+			logfile << line << endl;
+			for(int i = 0; i < errorlist.size(); i++){
+				logfile << errorlist[i] << endl;
+			}
+		}
 		lineCounter++;
 	}
-
+	logfile.close();
 }
 
 int main(int argc, char* argv[])
