@@ -19,7 +19,7 @@ enum columns {
 	LONGITUDE,
 	ALTITUDE,
 	UTC_OFFSET,
-	TIMEZONE_SHORT,
+	DST,
 	TIMEZONE_LONG,
 };
 
@@ -46,17 +46,13 @@ bool isValueCorrect(const std::string &teststring, const int &column)
 
 	switch (column)
 	{
-		// ICAO
-		case 4:
-			//regExp = "[a-zA-Z]+";
+		case ICAO_CODE:
 			regExp = "[A-Z0-9]{3,4}";
 			break;
-		// Altitude
-		case 8:
+		case ALTITUDE:
 			regExp = "[012]{1}[0-9]{0,4}";
 			break;
-		// DST
-		case 10:
+		case DST:
 			regExp = "[EASOZNU]{1}";
 			break;
 		// other column
