@@ -21,6 +21,7 @@ enum columns {
 	UTC_OFFSET,
 	DST,
 	TIMEZONE_LONG,
+	END,
 };
 
 vector<string> splitString(string toBeSplitted, char byChar){
@@ -40,35 +41,38 @@ vector<string> splitString(string toBeSplitted, char byChar){
 }
 
 
-bool isValueCorrect(const std::string &teststring, columns &column)
+string isValueCorrect(const std::string &teststring, columns &column)
 {
 	std::regex regExp;
-
+	string error_msg;
 	switch (column)
 	{
 		case ICAO_CODE:
 			regExp = "[A-Z0-9]{3,4}";
+			error_msg = "Der ICAO Code ist fehlerhaft.";
 			break;
 		case ALTITUDE:
 			regExp = "[012]{1}[0-9]{0,4}";
+			error_msg = "Die Altitude ist fehlerhaft.";
 			break;
 		case DST:
 			regExp = "[EASOZNU]{1}";
+			error_msg = "DST ist fehlerhaft.";
 			break;
 		// other column
 		default:
 			regExp = ".*";
+			error_msg = "Something went wrong.";
 			break;
 	}
-
-	return std::regex_match(teststring, regExp);
+	return (regex_match(teststring, regExp)) ? "" : error_msg;  
 }
 
 void readTokensAndLines(char* path)
 {
 	std::ifstream file(path);
 	std::string parsed, line;
-
+	int lineCounter = 0;
 	while (std::getline(file, line)) {
 		std::istringstream linestream;
 		linestream.str(line);
@@ -76,13 +80,23 @@ void readTokensAndLines(char* path)
 		
 		columns name = NAME;
 		columns timeZone = TIMEZONE_LONG;
-		cout << parts[name] << '-' << parts[timeZone] << endl;
+		// cout << parts[name] << '-' << parts[timeZone] << endl;
 		// TODO: - Split line and write result to std::cout
 		//       - Check each part of line with isValueCorrect and log if values are not supported
 		//       - Use and extend isValueCorrect function for this
 
+		// checking every Column:
+		columns column = NUMBER;
+		for(; column < 12;){
+			if(isValueCorrect(parts[column], column) != ""){
+				//write some Code to print out into file
+				cout << isValueCorrect(parts[column], column) << "line: " << lineCounter <<  "content: " << parts[column] << endl;
+			}
 
-		//std::cout << linestream << std::endl;
+			column = columns((int(column) + 1));
+		}
+		
+		lineCounter++;
 	}
 
 }
