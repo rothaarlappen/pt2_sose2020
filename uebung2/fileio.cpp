@@ -49,6 +49,7 @@ string isValueCorrect(const std::string &teststring, columns &column)
 	{
 		case ICAO_CODE:
 			regExp = "[A-Z0-9]{3,4}";
+			std::cout << "hier: " << column <<  std::endl; 
 			error_msg = "Der ICAO Code ist fehlerhaft.";
 			break;
 		case ALTITUDE:
@@ -65,7 +66,12 @@ string isValueCorrect(const std::string &teststring, columns &column)
 			error_msg = "Something went wrong.";
 			break;
 	}
-	return (regex_match(teststring, regExp)) ? "" : error_msg;  
+	cout << regex_match(teststring, regExp) << endl;
+	if(regex_match(teststring, regExp)){
+		return "";
+	}else {
+		return error_msg;
+	}
 }
 
 void readTokensAndLines(char* path)
