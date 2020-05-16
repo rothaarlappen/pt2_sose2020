@@ -6,8 +6,6 @@
 
 using namespace std;
 
-// 343;"Tempelhof";"Berlin";"Germany";"THF";"EDDI";52.473025;13.403944;167;1;"E";"Europe/Berlin"
-// 
 enum columns {
 	NUMBER, 
 	NAME, 
@@ -24,22 +22,6 @@ enum columns {
 	END,
 };
 
-vector<string> splitString(string toBeSplitted, char byChar){
-	vector <string> parts;
-    while(toBeSplitted.size()){
-        int index = toBeSplitted.find(byChar);
-        if(index!=string::npos){
-            parts.push_back(toBeSplitted.substr(0,index));
-            toBeSplitted = toBeSplitted.substr(index+1);
-            if(toBeSplitted.size()==0)parts.push_back(toBeSplitted);
-        }else{
-            parts.push_back(toBeSplitted);
-            toBeSplitted = "";
-        }
-    }
-	return parts;
-}
-
 string stripString(string toBeStripped){
 	if(toBeStripped.front() == '"' && toBeStripped.back() == '"' && toBeStripped.size() >= 2){
 		toBeStripped = toBeStripped.substr(1, toBeStripped.size() - 2);
@@ -54,20 +36,20 @@ string isValueCorrect(const std::string &teststring, columns &column)
 	switch (column)
 	{
 		case ICAO_CODE:
-			regExp = "[A-Z0-9]{3,4}|^$";
-			error_msg = "Der ICAO Code ist fehlerhaft.";
+			regExp = "^[A-Z0-9]{3,4}$|^$";
+			error_msg = "Der ICAO Code " + teststring + " ist fehlerhaft.";
 			break;
 		case ALTITUDE:
-			regExp = "[012]?[0-9]{0,4}";
-			error_msg = "Die Altitude ist fehlerhaft.";
+			regExp = "^[12]{1}[0-9]{0,4}|[1-9]{1}[0-9]{0,3}|0$";
+			error_msg = "Die Altitude " + teststring + " ist fehlerhaft.";
 			break;
 		case DST:
-			regExp = "[EASOZNU]{1}";
-			error_msg = "DST ist fehlerhaft.";
+			regExp = "^[EASOZNU]{1}$";
+			error_msg = "DST " + teststring + " ist fehlerhaft.";
 			break;
 		// other column
 		default:
-			regExp = ".*";
+			regExp = "^.*$";
 			error_msg = "Something went wrong.";
 			break;
 	}
@@ -90,21 +72,25 @@ void readTokensAndLines(char* path)
 	while (std::getline(file, line)) {
 		std::istringstream linestream;
 		linestream.str(line);
-		vector<string> parts = splitString(line, ';');
+		string value;
+		vector<string> parts;
+		// split string into parts
+		while(std::getline(linestream, value, ';')){
+			parts.push_back(stripString(value));
+		}
 
+		// print out name and timezone in line
 		columns name = NAME;
 		columns timeZone = TIMEZONE_LONG;
-		// cout << parts[name] << '-' << parts[timeZone] << endl;
-		// TODO: - Split line and write result to std::cout
-		//       - Check each part of line with isValueCorrect and log if values are not supported
-		//       - Use and extend isValueCorrect function for this
+		cout << parts[name] << " - " << parts[timeZone] << endl;
 
 		// checking every Column:
 		columns column = NUMBER;
 		vector<string> errorlist;
 		for(; column < parts.size();){
-			if(isValueCorrect(stripString(parts[column]), column) != ""){
-				errorlist.push_back(isValueCorrect(stripString(parts[column]), column));
+			string error = isValueCorrect(parts[column], column);
+			if(error != ""){
+				errorlist.push_back(error);
 			}
 			column = columns((int(column) + 1));
 		}
