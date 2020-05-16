@@ -15,6 +15,7 @@ ii)     x * y
             x2 := x;
             x3 := 0;
             x4 := x;
+            
             WHILE x1 != 0
                 DO
                 WHILE x2 != 0           // Addition von x2 zu x3

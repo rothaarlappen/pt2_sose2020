@@ -12,8 +12,8 @@ int main (){
     // Deine Mamastr.
 
     std::regex regExp;
-    regExp = "^[A-ZÄÖÜ][a-zäöüß]+( am| an der)?((\\s|\\-)[A-Zäöü][a-zäöüß]+)*$";
-    std::string teststring = "Bad Gottleuba-Berggießhübel";
+    regExp = "[A-Z0-9]{3,4}";
+    std::string teststring = "AYGA";
     if(std::regex_match(teststring, regExp)){
         std::cout << "RegEx tut matchen, du weißt" << std::endl;
     } else {
