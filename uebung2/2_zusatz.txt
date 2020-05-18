@@ -1,0 +1,4 @@
+Beschreiben Sie mit Hilfe der Erweiterten Backus-Naur-Form eine Grammatik, 
+die for-loops in C++ Schreibweise beschreibt.
+(Es sollten hierzu ggf. einige "Grundbausteine", wie z.B. Datentyp, Operator, Ausdruck... gegeben sein, 
+mit denen sich dann der Schwierigkeitsgrad anpassen lässt)
