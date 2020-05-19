@@ -1,18 +1,18 @@
 Aufgabe 2.3 - Reguläre Ausdrücke
 
-Vorname:        ^[A-ZZÄÖÜ][a-zßäöü]+([\\-|\\s][A-Z][a-zßäöü]*){0,3}$     
-                Jeder Vorname beginnt mit einem Großen Buchstaben [A-ZÄÖÜ],
+Vorname:        ^[A-ZZÄÖÜ][a-zßäöü]+([\\-| ][A-Z][a-zßäöü]*){0,3}$     
+                Jeder Vorname beginnt mit einem Großen Buchstaben ^[A-ZÄÖÜ],
                 gefolgt von einer mindestens eins langen Folge von kleinen Buchstaben [a-zßäöü]+
-                Ein Vorname darf also nur 2 Buchstaben lang sein (Googlerecherche ergab, dass "Ax" und "Bo" deutsche Namen sind
+                Ein Vorname darf mindestens 2 Buchstaben lang sein (Googlerecherche ergab, dass "Ax" und "Bo" deutsche Namen sind
                 und auch einige Chinesische Vornamen nur 2 Buchstaben lang sind.)
-                Gefolgt ist dieser erste Name dann maximal 3 weiteren "Zweitnamen", die entweder mit einem Bindestrich oder 
-                einem Leerzeichen Verknüpft sind [\\-|\\s]
+                Gefolgt ist dieser erste Name dann von maximal 3 weiteren "Zweitnamen", die entweder mit einem Bindestrich oder 
+                einem Leerzeichen Verknüpft sind [\\-| ]
                 
                 Gerd-Paul / Paul / Gerd Paul werden demnach erkannt
                 GERD Paul jedoch nicht, da hier mehrere Großbuchstaben aufeinander folgen.
 
 
-Nachname:       ^((von|vom|zum)\\s)?[A-Z][a-z]+((\\s|\\-)[A-ZÄÖÜ][a-zäöüß]+)?$       
+Nachname:       ^((von|vom|zum) )?[A-ZZÄÖÜ][a-zßäöü]+(( |\\-)[A-ZÄÖÜ][a-zäöüß]+)?$       
                 von, zum und vom sind erlaubte Präposistionen, von denen eins           (von|vom|zum)
                 gefolgt von einem Leerzeichen                                           \\s
                 vor dem eigentlichen Namen stehen darf                                  ?
@@ -24,9 +24,9 @@ Nachname:       ^((von|vom|zum)\\s)?[A-Z][a-z]+((\\s|\\-)[A-ZÄÖÜ][a-zäöüß
                 "Beim Fernseh Gucken" wird nicht erkannt, da "Beim" keine gültige Präposistion
                 ist und wir auch nur "Doppelnamen" erlaubt, keine dreifachen. 
 
-Straße:         ^([A-ZÖÄÜ][a-zäöüß]+)((\\s|\\.?\\-)(([A-ZÖÄÜ][a-zäöüß]+)))*.?$
+Straße:         ^([A-ZÖÄÜ][a-zäöüß]+)(([ ]|\\.?\\-)(([A-ZÖÄÜ][a-zäöüß]+)))*.?$
                 Ein Teil des Straßennames ist prinzipiell so aufgebaut wie wir es schon von Vor- und Nachnamen kennen:          ([A-ZÖÄÜ][a-zäöüß]+)
-                Darauf folgt nun beliebig häufig ein weiterer Teil, der immer eingeleitet wird von einem " ", ".-" oder nur "-" (\\s|\\.?\\-)
+                Darauf folgt nun beliebig häufig ein weiterer Teil, der immer eingeleitet wird von einem " ", ".-" oder nur "-" ([ ]|\\.?\\-)
                 Am Ende darf noch ein . stehen wie in "Müllerstr."
                 Prof.-Dr.-Helmert-Str. / Musterstraße / Musterstr. / Am Häuschen werden demnach erkannt
                 Prof .-Straße wird nicht erkannt, da zwischen zwei Teilen des Straßennamens entweder " " oder ".-" oder "-" stehen dürfen und nicht
@@ -36,11 +36,11 @@ Hausnummer:     ^[1-9]\\d{0,3}[a-z]?(\\-[1-9]\\d{0,3}[a-z]?)?$
                 Da keine Hausnummer mit 0 beginnt, muss das erste Zeichen eine Zahl zwischen 
                 1 und 9 sein                                                                    [1-9]
                 darauf folgt eine 0-3 lange Folge aus weiteren Ziffern                          \\d{0,3}
-                -> größte Hausnummer in Deutschland ist 4-Stellig
+                -> größte Hausnummer in Deutschland ist 4-Stellig (1501)
                 gefolgt von einem Buchstaben                                                    [a-z]?
                 Danach kann ein "-" und eine weitere Hausnummer folgen, um einen 
                 Hausnummerbereich anzugeben (3a-4c)                                             (\\-[1-9]\\d{0,3}[a-z]?)?
-                159 / 2a / 2a-4c werden demanch akzeptiert
+                159 / 2a / 2a-4c werden demnach akzeptiert
                 16000 wird zum Beispiel nicht akzeptiert, da eine Hausnummer maximal 4 Stellen haben darf.         
 
 
@@ -54,13 +54,13 @@ Postleitzahl:   ^[\\d]{5}$
                 und zwar von Wortanfang bis Wortende genau 5 Stück hintereinander       {5}
                 12345 / 98765 / 18769 werden demnach akzeptiert
                 123456 nicht, da dies 6 aufeinanderfolgende Zahlen sind.
-                -> ^$ sind hier wichtig, da sonst 2 Matches erkannt worden wären. 
+                -> ^$ sind hier besonders wichtig, da sonst 2 Matches erkannt worden wären. 
 
-Ort:            ^[A-ZÄÖÜ][a-zäöüß]+( am| an der)?((\\s|\\-)[A-Zäöü][a-zäöüß]+)*$
+Ort:            ^[A-ZÄÖÜ][a-zäöüß]+( am| an der)?(([ ]|\\-)[A-Zäöü][a-zäöüß]+)*$
                 Zuerst kommt der Standardteil aus Groß- und Kleinbuchstaben                 [A-ZÄÖÜ][a-zäöüß]+
                 Daraufhin kann ein " am" oder " an der" wie in "Frankfurt am Main" folgen   ( am| an der)?
                 und danach dann entweder mit Leerzeichen oder Bindestrich getrennt beliebig 
-                viele nächste Teile                                                         ((\\s|\\-)[A-Zäöü][a-zäöüß]+)*
+                viele nächste Teile                                                         (([ ]|\\-)[A-Zäöü][a-zäöüß]+)*
 
                 Bad Gottleuba-Berggießhübel / Berlin / Frankfurt am Main werden dadurch erkannt
                 Berlin030 wird nicht gematched, da keine Zahlen erlaubt sind. 

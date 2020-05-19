@@ -12,15 +12,17 @@ std::string step(std::string state, int value)
 	// TODO: Handle all possible states and values and return the respective new state
 	// Note: Accepted coin values are {10, 20, 50}.
 	string dispense = "dispense";
-	vector<int> acceptedValues = {10, 20, 50};
 
-	if(value != 10 && value != 20 && value != 50) return state;
+	if(value != 10 && value != 20 && value != 50){ 	
+		std::cout << "Invalid input.\n"; return state;
+	}
 
 	switch(stoi(state)) {
 		case 0:
 			switch(value){
 				case 50: return dispense; break;
-				default : return to_string(value); break;
+				case 20: return "20";
+				case 10: return "10"; 
 			}
 		case 10:
 			switch(value){
@@ -40,15 +42,12 @@ std::string step(std::string state, int value)
 				default: return dispense;
 			}
 		case 40:
-			switch(value){
-				default: return dispense;
-			}
+			return dispense;
+		default: break;
 	}
 
-
-
 	// for all states and inputs which are not handled above show a message and return original state
-	std::cout << "Invalid input.\n";
+
 	return state;
 }
 
@@ -58,7 +57,6 @@ std::string stepExtended(std::string state, int value)
 	string dispense = "dispense";
 	// TODO: Handle all possible states and values and return the respective new state
 	// Note: Accepted coin values are {10, 20, 50}. Accepted drink selection values are {1, 2, 3}.
-	cout << "state:" << state << " value:" << value << endl;
 	
 	try{
 		switch(stoi(state)){

@@ -5,15 +5,9 @@
 #include <regex>
 int main (){
 
-    
-    // Müllerstr.
-    // Prof-Dr.-Heisestr.
-    // Wilhelmstraße
-    // Deine Mamastr.
-
     std::regex regExp;
-    regExp = "[A-Z0-9]{3,4}";
-    std::string teststring = "AYGA";
+    regExp = "^([A-ZÖÄÜ][a-zäöüß]+)(( |\\.?\\-)(([A-ZÖÄÜ][a-zäöüß]+)))*.?$";
+    std::string teststring = "Gerd Paul";
     if(std::regex_match(teststring, regExp)){
         std::cout << "RegEx tut matchen, du weißt" << std::endl;
     } else {
