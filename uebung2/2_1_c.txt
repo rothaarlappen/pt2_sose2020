@@ -8,6 +8,6 @@ wird umgeformt zu
             x1 = e;
             WHILE x1 != 0 
                 DO 
-                    P
-                    x1 := x1 - 1
+                P;
+                x1 := x1 - 1
             END 
