@@ -159,7 +159,7 @@ void generateTours(vector< vector<int> >& tourSet) {
 // TODO 3.3d: take two (good) parent tours, and build a new one by the gens of both. Hint: Use rand, findCity and insertCity.
 void crossover(const vector<int>& parent1, const vector<int>& parent2, vector<int>& child) {
 	// ...
-	int s_index = rand() % N-5;
+	int s_index = rand() % (N-5);
 	for(int i = 0 ; i < 5; i++){
 		child[s_index+i] = parent1[s_index+i];
 	}
@@ -222,12 +222,11 @@ pair<int,int> evolution(vector<vector<int>>& tourSet) {
 	crossover(T1, T2, T12); // two parent, one new child
 	tourSet[F[M-1].second] = T12; // overwrite worst tour by newly generated crossover
 
-	// for(int i = 2 ; i < M-1 ; i++){
-	// 	printTourCityNames(tourSet[i]);
-	// }
+
 	// TODO 3.3e: Mutate all other tours (ignore two best trips and the former worst trip (replaced)). Use the mutate method.
-	for(int i = 2 ; i < M-1 ; i++){
-		mutate(tourSet[i]);
+	for(int i = 0 ; i < M ; i++){
+		if( i != F[M-1].second && i != F[0].second && i != F[1].second)
+			mutate(tourSet[i]);
 	}
 
 
@@ -254,11 +253,13 @@ int main(int argc, char** argv) {
 
 	// do a fixed number of evolution steps
 	for(int e=0; e<5000; e++) {
-		cout << e << endl;
 		auto lengths = evolution(TourSet);
 
 		// report statistics
 		stats << lengths.first << "; " << lengths.second <<endl;
+		minDist = lengths.first;
+		if(lengths.second > maxDist)
+			maxDist = lengths.second;
 	}
 
 	// after evolution iterations, log on last tour
