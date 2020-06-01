@@ -189,10 +189,6 @@ void calculateDistancePerRoute(std::map<int, AirportInfo>& airportInfo)
   std::cout << "Calculate distance for each route" << std::endl;
 
   for (auto& currentAirport : airportInfo) {
-
-    //std::cout << "1. Key : " << currentAirport.first << std::endl;
-    //std::cout << "1." << currentAirport.second.pos[0] << std::endl;
-    //std::cout << "2." << currentAirport.second.pos[1] << std::endl;
     std::vector <float> routeLengths(currentAirport.second.m_routes.size());
     if (currentAirport.second.m_routes.size() != 0) {
       std::transform(

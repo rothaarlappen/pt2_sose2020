@@ -8,6 +8,7 @@
 #include <ctime>
 
 #define HEADER_LINE  1
+
 // transforms a string to a date. Throws a logic_error if year is *not* between 1893 and 2018
 std::tm stringToTime(std::string date)
 {
@@ -24,54 +25,64 @@ std::tm stringToTime(std::string date)
 	}
 	return t;
 }
-
 struct FormatException
 {
 	int m_actLine;
 	std::string m_actFields;
 };
-
-std::vector<std::string> splitStringByDelimiter(std::string line, char delimiter) {
+std::vector<std::string> splitLineByDelimiter(std::string line, char delimiter) {
   std::istringstream linestream;
   linestream.str(line);
   std::vector<std::string> parts;
   std::string value;
-  // split string into parts
+
   while (std::getline(linestream, value, delimiter)) {
     parts.push_back(value);
   }
   return parts;
 }
 
+std::string checkDateFormat(std::string date){
+  try {
+    tm time = stringToTime(date);
+    return "";
+  }
+  catch (...) {
+    return "Time ";
+  }
+}
+std::string checkTemperatureFormat(std::string temperatureString){
+  try {
+    float temperature = std::stof(temperatureString);
+    return "";
+  }
+  catch (...){
+    return "Temperature ";
+  }
+}
+std::string checkRainfallFormat(std::string rainfallString){
+  try {
+    float rainfall = std::stof(rainfallString);
+    return "";
+  }
+  catch (...) {
+    return "Rainfall";
+  }
+}
+
+
 void parseLine(std::string line, int lineNum)
 {
 	const std::string fieldNames[3] = { "Date", "Temperature", "Rainfall" };
-  FormatException FormatException;
-  FormatException.m_actLine = lineNum;
-  FormatException.m_actFields = "";
-
+  FormatException FormatException = {lineNum, ""};
+  std::vector<std::string> parts = splitLineByDelimiter(line, ';');
 	// TODO 3.1b: parse a given line, check dates by calling stringToTime, check temperature/rainfall by calling std::stof.
 	// Catch all exceptions thrown by these methods.
 	// If there have been any exceptions, aggregate all necessary information into an instance of FormatException and throw that instance.
-  std::vector<std::string> parts = splitStringByDelimiter(line, ';');
-  try {
-    tm time = stringToTime(parts[0]);
-  }
-  catch (...) {
-    FormatException.m_actFields += "Time ";
-  }
-  try {
-    float temperature = std::stof(parts[1]);
-  }
-  catch (...){
-    FormatException.m_actFields += "Temperature ";
-  }
-  try {
-    float rainfall = std::stof(parts[2]);
-  }
-  catch (...) {
-    FormatException.m_actFields += "Rainfall";
-  }
+  FormatException.m_actFields += checkDateFormat(parts[0]);
+  FormatException.m_actFields += checkTemperatureFormat(parts[1]);
+  FormatException.m_actFields += checkRainfallFormat(parts[2]);
+
   if (FormatException.m_actFields != "") {
 	// if(FormatException.m_actLine == HEADER_LINE){
 	// 	return;
