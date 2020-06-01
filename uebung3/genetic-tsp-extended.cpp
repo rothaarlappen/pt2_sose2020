@@ -31,6 +31,10 @@ const vector<int> NullTour(N, -1);
 const int M = 20; // population size per generation, i.e., no of tours
 int minDist = numeric_limits<int>::max(); // global minimum of tour length, over all generations
 int maxDist = numeric_limits<int>::min(); // global maximum of tour length, over all generations
+float mutation_prob;
+int crossover_len;
+int crossovers;
+
 
 
 // real data for N=20 (German city distances)
@@ -160,9 +164,8 @@ void generateTours(vector< vector<int> >& tourSet) {
 
 // TODO 3.3d: take two (good) parent tours, and build a new one by the gens of both. Hint: Use rand, findCity and insertCity.
 void crossover(const vector<int>& parent1, const vector<int>& parent2, vector<int>& child) {
-
-	int s_index = rand() % (N-5);
-	for(int i = 0 ; i < 5; i++){
+	int s_index = rand() % (N-crossover_len);
+	for(int i = 0 ; i < crossover_len; i++){
 		child[s_index+i] = parent1[s_index+i];
 	}
 	for(int i = 0; i < N; i++){
@@ -177,11 +180,10 @@ void crossover(const vector<int>& parent1, const vector<int>& parent2, vector<in
 
 // TODO 3.3e: Mutate a given tour, swapping cities randomly based on probability. Hint: Use frand and std::swap.
 void mutate(vector<int>& tour) {
-	const float mutationProbability = 0.02f; // x% probability per city in a tour to get mutated
 	float dice;
 	for(int i = 0; i < N; i++){
 		dice = frand(0,1);
-		if(dice <= mutationProbability){
+		if(dice <= mutation_prob){
 			int swap_partner;
 			do{
 				swap_partner = rand() % 20;
@@ -212,22 +214,27 @@ vector<pair<int,int>> fitness(vector<vector<int>>& tourSet) {
 pair<int,int> evolution(vector<vector<int>>& tourSet) {
 	assert(tourSet.size()==M);
 	pair<int,int> statistics; // used as return values (min/max tour lengths)
-	// compute fitness of tours, store shortest and largest tour length in statistics
+	// compute fitness of tours, store shortest and largest tour length in statistics    
 	auto F = fitness(tourSet);
 	statistics.first = F[0].first; // tour with shortest tour length
 	statistics.second = F[M-1].first; // tour with largest tour length
 
+	vector<int> crossovered_tours; 
 	// compute and store crossover tour
-	const vector<int>& T1 = tourSet[F[0].second]; // take first best tour
-	const vector<int>& T2 = tourSet[F[1].second]; // take second best tour
-	vector<int> T12(N, -1);
-	crossover(T1, T2, T12); // two parent, one new child
-	tourSet[F[M-1].second] = T12; // overwrite worst tour by newly generated crossover
+	for(int i = 1; i <= crossovers; i++){
+		const vector<int>& T1 = tourSet[F[(i-1)*2].second]; // take first best tour
+		const vector<int>& T2 = tourSet[F[(i*2)-1].second]; // take second best tour
+		vector<int> T12(N, -1);
+		crossover(T1, T2, T12); // two parent, one new child
+		tourSet[F[M-i].second] = T12; // overwrite worst tour by newly generated crossover
+		crossovered_tours.push_back(F[M-i].second);
+		crossovered_tours.push_back(F[(i-1)*2].second);
+		crossovered_tours.push_back(F[(i*2)-1].second);
+	}
 
 
-	// TODO 3.3e: Mutate all other tours (ignore two best trips and the former worst trip (replaced)). Use the mutate method.
 	for(int i = 0 ; i < M ; i++){
-		if( i != F[M-1].second && i != F[0].second && i != F[1].second)
+		if( find(crossovered_tours.begin(), crossovered_tours.end(), i) == crossovered_tours.end() )
 			mutate(tourSet[i]);
 	}
 
@@ -238,6 +245,37 @@ pair<int,int> evolution(vector<vector<int>>& tourSet) {
 
 
 int main(int argc, char** argv) {
+	// check arguments:
+	if(argc != 4){
+		cout << "Bitte geben Sie folgende Parameter an: Mutationswahrscheinlichkeit (0 - 1), Länge der Crossover (0 - 19) und die Anzahl der Kreuzungen (0 - 5)" << endl;
+		return 1;
+	}
+	try{
+		mutation_prob = stof(argv[1]);
+		if(mutation_prob < 0 || mutation_prob > 1){
+			cout << "Mutationswahrscheinlichkeit muss zwischen 0 und 1 liegen" << endl;
+			return 1;
+		}
+		crossover_len = stoi(argv[2]);
+		if(crossover_len < 0 || crossover_len > 19){
+			cout << "Länge der Crossover muss zwischen 0 und 19 liegen" << endl;
+			return 1;
+		}
+		crossovers = stoi(argv[3]);
+		if(crossovers < 0 || crossovers > 5){
+			cout << "Länge der Crossover muss zwischen 0 und 5 liegen" << endl;
+			return 1;
+		}
+	}catch(invalid_argument){
+		cout << "Wir erwarten Zahlen als Input." << endl;
+		return 1;
+	}catch(out_of_range){
+		cout << "Aber nicht soo große Zahlen." << endl;
+		return 1;
+	}catch(...){
+		cout << "So nen Quatsch wollen wir erst garnicht." << endl;
+		return 1;
+	}
 	// reset random generator
 	srand(static_cast<unsigned int>(time(0)));
 
