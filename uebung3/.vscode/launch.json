@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(gdb) Starten",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "C:\\Users\\roess\\Desktop\\Hasso-Plattner-Institut\\2.Semester\\PT2\\pt2_sose2020\\uebung3\\a.exe",
+            "args": ["thisIsATest"],
+            "stopAtEntry": false,
+            "cwd": "C:\\Users\\roess\\Desktop\\Hasso-Plattner-Institut\\2.Semester\\PT2\\pt2_sose2020\\uebung3",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Automatische Strukturierung und Einrückung für \"gdb\" aktivieren",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}
