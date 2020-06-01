@@ -94,12 +94,21 @@ bool validTour(const vector<int>& tour) {
 
 // TODO 3.3a: returns distance between two cities based on the distance table
 int cityDistance(int city1, int city2) {
-	return 0;
+	assert(city1 >= 0 && city1 < N);
+	assert(city2 >= 0 && city2 < N);
+
+	return distance_table[city1][city2];
 }
 
 // TODO 3.3b: calculate the length for a given tour, assuming a round trip
 int tourLength(const vector<int>& T) {
-	return 0;
+	assert(T.size() == N);
+	assert(validTour(T));
+	int len = 0;
+	for(int i = 0; i < N-1; i++){
+		len += cityDistance(T[i], T[i+1]);
+	}
+	return len;
 }
 
 //  print city names of a tour
@@ -120,7 +129,16 @@ void printTourSet(const vector<vector<int>>& TourSet) {
 
 // TODO 3.3c: inserts a city in an incomplete tour, using the next free slot
 void insertCity(vector<int>& tour, int city) {
+	assert(city >= 0 && city < N);
+	// perhaps following assertion has to be removed? ("too advanced??")
+	assert(!findCity(tour, city));
 
+	for(int i = 0; i < N ; i++){
+		if(tour[i] == -1){
+			tour[i] = city;
+			break;
+		}		
+	}
 }
 
 
@@ -141,6 +159,15 @@ void generateTours(vector< vector<int> >& tourSet) {
 // TODO 3.3d: take two (good) parent tours, and build a new one by the gens of both. Hint: Use rand, findCity and insertCity.
 void crossover(const vector<int>& parent1, const vector<int>& parent2, vector<int>& child) {
 	// ...
+	int s_index = rand() % N-5;
+	for(int i = 0 ; i < 5; i++){
+		child[s_index+i] = parent1[s_index+i];
+	}
+	for(int i = 0; i < N; i++){
+		if(!findCity(child, parent2[i]))
+			insertCity(child, parent2[i]);
+	}
+		
 
 	assert(tourDefined(child)); // check for undefined city indices
 	assert(validTour(child)); // check that each city is defined only once
@@ -149,6 +176,18 @@ void crossover(const vector<int>& parent1, const vector<int>& parent2, vector<in
 // TODO 3.3e: Mutate a given tour, swapping cities randomly based on probability. Hint: Use frand and std::swap.
 void mutate(vector<int>& tour) {
 	const float mutationProbability = 0.02f; // x% probability per city in a tour to get mutated
+	float dice;
+	for(int i = 0; i < N; i++){
+		dice = frand(0,1);
+		if(dice <= mutationProbability){
+			int swap_partner;
+			do{
+				swap_partner = rand() % 20;
+			}while(swap_partner == i);
+			swap(tour[i], tour[swap_partner]);
+		}
+	}
+	
 
 }
 
@@ -171,7 +210,6 @@ vector<pair<int,int>> fitness(vector<vector<int>>& tourSet) {
 pair<int,int> evolution(vector<vector<int>>& tourSet) {
 	assert(tourSet.size()==M);
 	pair<int,int> statistics; // used as return values (min/max tour lengths)
-
 	// compute fitness of tours, store shortest and largest tour length in statistics
 	auto F = fitness(tourSet);
 	statistics.first = F[0].first; // tour with shortest tour length
@@ -184,9 +222,13 @@ pair<int,int> evolution(vector<vector<int>>& tourSet) {
 	crossover(T1, T2, T12); // two parent, one new child
 	tourSet[F[M-1].second] = T12; // overwrite worst tour by newly generated crossover
 
+	// for(int i = 2 ; i < M-1 ; i++){
+	// 	printTourCityNames(tourSet[i]);
+	// }
 	// TODO 3.3e: Mutate all other tours (ignore two best trips and the former worst trip (replaced)). Use the mutate method.
-
-
+	for(int i = 2 ; i < M-1 ; i++){
+		mutate(tourSet[i]);
+	}
 
 
 
@@ -212,6 +254,7 @@ int main(int argc, char** argv) {
 
 	// do a fixed number of evolution steps
 	for(int e=0; e<5000; e++) {
+		cout << e << endl;
 		auto lengths = evolution(TourSet);
 
 		// report statistics
