@@ -2,46 +2,51 @@ Wir haben unser Programm nochmal etwas erweitert - weil wir keine Lust hatten be
 eh schon blutig getippten Coding-Finger noch weiter zu verunstalten.
 
 Jeder test wurde 100mal ausgeführt. Dabei wurde der Durschnitt der ermittelten minimalsten Strecken berechnet, die insgesamt kürzeste
-Strecke und die Anzahl wie oft die Strecke der Länge 1652 ermittelt wurde. (Wir gehen davon aus, dass dies die kürzeste Strecke ist.)
+Strecke und die Anzahl wie oft die Strecke der Länge 1930 ermittelt wurde. (Wir gehen davon aus, dass dies die kürzeste Strecke ist.)
 
 Wir kommen zu folgendem Ergebnis: 
-    average shortest trip: ( 0.02;5;1 ) 1957km
-    shortest trip: 1652
-    number shortest trip: 2
-    average shortest trip: ( 0.01;5;1 ) 1950km
-    shortest trip: 1659
-    number shortest trip: 0
-    average shortest trip: ( 0.02;4;1 ) 1955km
-    shortest trip: 1652
-    number shortest trip: 3
-    average shortest trip: ( 0.02;5;1 ) 1938km
-    shortest trip: 1652
-    number shortest trip: 4
-    average shortest trip: ( 0.02;6;1 ) 1943km
-    shortest trip: 1652
-    number shortest trip: 3
-    average shortest trip: ( 0.02;5;0 ) 4152km
-    shortest trip: 3422
-    number shortest trip: 0
-    average shortest trip: ( 0.02;5;1 ) 1930km
-    shortest trip: 1652
-    number shortest trip: 3
-    average shortest trip: ( 0.02;5;2 ) 1930km
-    shortest trip: 1652
-    number shortest trip: 1
-    average shortest trip: ( 0.02;10;3 ) 1973km
-    shortest trip: 1652
-    number shortest trip: 3
+    average shortest trip: ( 0.08;5;2 ) 2118km
+    shortest trip: 1930
+    number shortest trip: 28
 
-Wir sehen, dass die bereits vorgegebenen Parameter (0.02, 5, 1) knapp die besten Ergebnisse erzielen - wir zweifeln etwas an der Sinnhaftigkeit der
-Bonusaufgabe.
+    average shortest trip: ( 0.05;5;4 ) 2113km
+    shortest trip: 1930
+    number shortest trip: 32
+
+    average shortest trip: ( 0.05;5;2 ) 2113km
+    shortest trip: 1930
+    number shortest trip: 28
+
+    average shortest trip: ( 0.04;5;2 ) 2107km
+    shortest trip: 1930
+    number shortest trip: 30
+
+    average shortest trip: ( 0.03;5;1 ) 2137km
+    shortest trip: 1930
+    number shortest trip: 27
+
+    average shortest trip: ( 0.03;7;1 ) 2146km
+    shortest trip: 1930
+    number shortest trip: 28
+                                                       _
+    average shortest trip: ( 0.04;5;3 ) 2064km          |  
+    shortest trip: 1930                                 |
+    number shortest trip: 43                            |
+                                                        |>    Wichtiger Stuff ;)
+    average shortest trip: ( 0.02;5;1 ) 2160km          |
+    shortest trip: 1930                                 |
+    number shortest trip: 17                           _|
+
+Wie wir sehen erzielen die Paramter ( 0.04;5;3 ) mit einer Durchschnittsstrecke von nur 2064km und einer 43%igen Chance die 
+kürzeste Strecke zu ermitteln, die besten Ergebnisse. 
 
 Warum ausgerechnet diese Parameter so besonders sind, können wir uns jedoch nicht erklären. 
-Klar ist: Eine zu hohe Mutationsrate sorgt wahrscheinlich für eine zu starke Durchmischung bereits bestehender korrekter Abschnitte in den Routen. 
+Klar ist: Eine zu hohe Mutationsrate sorgt wahrscheinlich für eine erneute Durchmischung bereits bestehender korrekter Abschnitte in den Routen. 
+Wenn die Rate zu gering ist, gibt es wenig Veränderungen und Folgegeneratioen ähneln sehr der vorherigen. 
 
 Zu große Crossover-Intervalllängen würden zur Zerstörung der Reihenfolge führen (da Parent1 und Parent2 gut und gerne doch sehr verschiedene Wege nehmen).
-Bei zu kleinen Intervallängen würde die Rekombination wenig Nutzen haben, da quasi die gesamte Reihenfolge aus dem zweiten Parent übernommen werden würde.
+Bei zu kleinen Intervallängen würde die Rekombination wenig Nutzen haben, da quasi die gesamte Reihenfolge aus dem Parent2 übernommen werden würde.
 
-Wir sind etwas ratlos, da die Aufgabenstellung eine deutlich bessere Parameterkombination vermuten lässt.
+Eventuell ist uns eine bessere Parameterbelegung entgangen, wir sind jedoch sehr zufrieden mit dem Ergebnis 
 
-Naja, wir wünschen jedenfalls viel Spaß bei der Betrachtung eines quasi identischen Graphen wie in 3.3f) 
+:)

@@ -114,6 +114,7 @@ int tourLength(const vector<int>& T) {
 	for(int i = 0; i < N-1; i++){
 		len += cityDistance(T[i], T[i+1]);
 	}
+	len += cityDistance(T[19], T[0]);
 	return len;
 }
 
@@ -164,7 +165,7 @@ void generateTours(vector< vector<int> >& tourSet) {
 
 // TODO 3.3d: take two (good) parent tours, and build a new one by the gens of both. Hint: Use rand, findCity and insertCity.
 void crossover(const vector<int>& parent1, const vector<int>& parent2, vector<int>& child) {
-	int s_index = rand() % (N-crossover_len);
+	int s_index = rand() % (N-(crossover_len-1));
 	for(int i = 0 ; i < crossover_len; i++){
 		child[s_index+i] = parent1[s_index+i];
 	}
@@ -288,13 +289,30 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 
-    uff test0 = {0.03, 5, 1};
-    uff test1 = {0.02, 5, 1};
+    uff test01 = {0.03, 5, 1};
+	
+	//uff test02 = {0.03, 5, 2};
+	// uff test03 = {0.04, 5, 3};
+	// uff test05 = {0.04, 5, 2};
+	// uff test04 = {0.04, 5, 1};
+
+	uff test03 = {0.04, 5, 3};
+	uff test05 = {0.04, 5, 4};
+	uff test04 = {0.04, 5, 5};
+	
+    // uff test05 = {0.03, 7, 1};
+	// uff test06 = {0.03, 7, 2};
+	// uff test07 = {0.03, 7, 3};
+    
+	
+	uff test1 = {0.02, 5, 1};
     uff test2 = {0.01, 5, 1};
 
     uff test11 = {0.02, 4, 1};
     uff test12 = {0.02, 5, 1};
     uff test13 = {0.02, 6, 1};
+
+
 
     uff test14 = {0.02, 5, 0};
     uff test15 = {0.02, 5, 1};
@@ -306,15 +324,23 @@ int main(int argc, char** argv) {
 
     uff test4 = {};
     std::vector<uff> tests = { 
-        test1,
-        test2, 
-        test11, 
-        test12, 
-        test13, 
-        test14, 
-        test15, 
-        test16, 
-     test17,
+		// test01,
+		//test02,
+		test03,
+		test04,
+		test05,		
+		// test06,
+		// test07
+
+    //     test1,
+    //     test2, 
+    //     test11, 
+    //     test12, 
+    //     test13, 
+    //     test14, 
+    //     test15, 
+    //     test16, 
+    //  test17,
 
      };
 
@@ -354,9 +380,8 @@ int main(int argc, char** argv) {
             if(FE[0].first < test.min_min){
                 test.min_min = FE[0].first;
             }
-            if(FE[0].first == 1652){
+            if(FE[0].first == 1930){
                 test.anzahl_minmin++;
-				return; 
             }
         }
         std::cout << "average shortest trip: ( "<< test.mutation_prob << ";" << test.crossover_len << ";" << test.crossovers << " ) " <<  test.min / ITERATIONS  << "km" << endl;
