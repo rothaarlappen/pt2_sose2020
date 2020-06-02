@@ -110,6 +110,7 @@ int tourLength(const vector<int>& T) {
 	for(int i = 0; i < N-1; i++){
 		len += cityDistance(T[i], T[i+1]);
 	}
+	len += cityDistance(T[19], T[0]);
 	return len;
 }
 
@@ -161,7 +162,7 @@ void generateTours(vector< vector<int> >& tourSet) {
 // TODO 3.3d: take two (good) parent tours, and build a new one by the gens of both. Hint: Use rand, findCity and insertCity.
 void crossover(const vector<int>& parent1, const vector<int>& parent2, vector<int>& child) {
 
-	int s_index = rand() % (N-5);
+	int s_index = rand() % (N-4);
 	for(int i = 0 ; i < 5; i++){
 		child[s_index+i] = parent1[s_index+i];
 	}
