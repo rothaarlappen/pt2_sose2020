@@ -7,8 +7,6 @@
 #include <vector>
 #include <ctime>
 
-#define HEADER_LINE  1
-
 // transforms a string to a date. Throws a logic_error if year is *not* between 1893 and 2018
 std::tm stringToTime(std::string date)
 {
@@ -70,7 +68,6 @@ std::string checkRainfallFormat(std::string rainfallString){
   }
 }
 
-
 void parseLine(std::string line, int lineNum)
 {
 	const std::string fieldNames[3] = { "Date", "Temperature", "Rainfall" };
@@ -84,45 +81,45 @@ void parseLine(std::string line, int lineNum)
   FormatException.m_actFields += checkRainfallFormat(parts[2]);
 
   if (FormatException.m_actFields != "") {
-	// if(FormatException.m_actLine == HEADER_LINE){
-	// 	return;
-	// }
     throw FormatException;
   }
+  return; 
 }
-
 // TODO 3.1d
 void writeOutFormatException(const FormatException& e)
 {
+  std::ofstream logfile;
+  std::ios_base::iostate exceptionMask = logfile.exceptions() | std::ios::failbit;
+  logfile.exceptions(exceptionMask);
+
   try{
-	std::ofstream logfile;
-	logfile.open("FormatExceptions.log", std::ios_base::app);
-	logfile << e.m_actLine << " : " << e.m_actFields << std::endl;
-	logfile.close();
+    logfile.open("FormatExceptions.log", std::ios_base::app);
+    logfile << e.m_actLine << " : " << e.m_actFields << std::endl;
+    logfile.close();
   }
   catch (std::ofstream::failure e){
-    std::cerr << "Exception opening/reading/closing file" << std::endl;
+    std::cerr << "Exception opening/reading/closing Logfile" << std::endl;
   }
 }
-
 void checkData(std::string path)
 {
 	int validLines = 0;
 	int invalidLines = 0;
-  	int linenumber = 1;
+  int linenumber = 1;
 	std::ifstream file;
-  	std::string line;
+  std::string line;
+
+  std::ios_base::iostate exceptionMask = file.exceptions() | std::ios::failbit;
+  file.exceptions(exceptionMask);
 
   // TODO 3.1a: open file + read each line + call parseLine function (catch ifstream::failure)
 	try {
-		std::cout << "opening" << std::endl;
 		file.open(path);
-	}
-	catch (std::ifstream::failure e){
-		std::cout << "catch" << std::endl;
-		std::cerr << "Exception opening/reading/closing file" << std::endl;
-	}
+    // Ignoring Header-Line
+    //std::getline(file, line);
+    
     while (!file.eof()) {
+
       std::getline(file, line);
       // TODO 3.1c: read each line + call parseLine function (catch FormatException) + count valid + invalid lines
       try {
@@ -134,19 +131,36 @@ void checkData(std::string path)
         writeOutFormatException(e);
       }
       linenumber++;
-    }
 
-	std::cout << "valid data fields: " << validLines << " - invalid data fields: " << invalidLines << std::endl;
+    }
+    file.close();
+    
+	  std::cout << "valid data fields: " << validLines << " - invalid data fields: " << invalidLines << std::endl;
+  }
+	catch (std::ifstream::failure e){
+		std::cerr << "Exception opening/reading/closing file" << std::endl;
+	}
+
 }
 
-int main(int argc, char * argv[])
-{
+void clearLogfile(){
+  std::ofstream logfile;
+  try{
+    logfile.open("FormatExceptions.log", std::ios_base::binary);
+    logfile << "Line : Error Description" << std::endl;
+    logfile.close();
+  } catch (std::ifstream::failure e){
+    std::cerr << "Exception opening/reading/closing Logfile" << std::endl;
+  }
+}
+
+int main(int argc, char * argv[]){
 	if(argc != 2)
 	{
 		std::cout << "Invalid number of arguments - USAGE: exceptions [DATASET]" << std::endl;
 		return -1;
 	}
-
+  clearLogfile();
 	checkData(argv[1]);
 
 	return 0;

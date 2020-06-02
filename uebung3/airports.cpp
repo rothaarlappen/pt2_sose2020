@@ -177,9 +177,10 @@ void removeNonDirectFlights(std::map<int, AirportInfo>& airportInfo)
 {
   std::cout << "Remove non-direct flights (i.e., at least one stop)" << std::endl;
   for (auto& airport : airportInfo) {
-    std::remove_if(airport.second.m_routes.begin(),
-      airport.second.m_routes.end(),
-      [](std::pair<int, int> x) {return x.second > 1;});
+    airport.second.m_routes.erase(
+      std::remove_if(airport.second.m_routes.begin(),airport.second.m_routes.end(),
+        [](std::pair<int, int> &x) {return x.second > 0;}), 
+    airport.second.m_routes.end());
   }
 }
 
@@ -189,7 +190,9 @@ void calculateDistancePerRoute(std::map<int, AirportInfo>& airportInfo)
   std::cout << "Calculate distance for each route" << std::endl;
 
   for (auto& currentAirport : airportInfo) {
+
     std::vector <float> routeLengths(currentAirport.second.m_routes.size());
+
     if (currentAirport.second.m_routes.size() != 0) {
       std::transform(
         currentAirport.second.m_routes.begin(),
@@ -203,9 +206,9 @@ void calculateDistancePerRoute(std::map<int, AirportInfo>& airportInfo)
           airportInfo[routeFromCurrentAirport.first].pos[1]);
       }
       );
+
     }
     currentAirport.second.m_routeLengths = routeLengths;
-    int i = 0;
   }
 }
 
@@ -255,7 +258,6 @@ int main(int argc, char* argv[])
   calculateDistancePerRoute(airportInfo);
   calculateAverageRouteDistances(airportInfo);
   printResults(airportInfo);
-
 
   return 0;
 }
