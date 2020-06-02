@@ -175,6 +175,8 @@ void importRoutesData(char* path, std::map<int, AirportInfo>& airportInfo)
 // TODO 3.2a - remove all routes from AirportInfo::m_routes with at least one stop (so that only direct flights remain). Use std::remove_if().
 void removeNonDirectFlights(std::map<int, AirportInfo>& airportInfo)
 {
+  int i = 0;
+  int j = 0;
   std::cout << "Remove non-direct flights (i.e., at least one stop)" << std::endl;
   for (auto& airport : airportInfo) {
     airport.second.m_routes.erase(
@@ -182,6 +184,7 @@ void removeNonDirectFlights(std::map<int, AirportInfo>& airportInfo)
         [](std::pair<int, int> &x) {return x.second > 0;}), 
     airport.second.m_routes.end());
   }
+  std::cout << "Initial: " << i << "   Danach: " << j << std::endl;
 }
 
 // TODO 3.2b - For each route in AirportInfo::m_routes, calculate the distance between start and destination. Store the results in AirportInfo::m_routeLengths. Use std::transform() and calculateDistanceBetween().
