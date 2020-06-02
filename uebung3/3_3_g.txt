@@ -1,0 +1,47 @@
+Wir haben unser Programm nochmal etwas erweitert - weil wir keine Lust hatten beim "<PfeiltasteHoch>-<Eingabe>"-Spammen unsere 
+eh schon blutig getippten Coding-Finger noch weiter zu verunstalten.
+
+Jeder test wurde 100mal ausgeführt. Dabei wurde der Durschnitt der ermittelten minimalsten Strecken berechnet, die insgesamt kürzeste
+Strecke und die Anzahl wie oft die Strecke der Länge 1652 ermittelt wurde. (Wir gehen davon aus, dass dies die kürzeste Strecke ist.)
+
+Wir kommen zu folgendem Ergebnis: 
+    average shortest trip: ( 0.02;5;1 ) 1957km
+    shortest trip: 1652
+    number shortest trip: 2
+    average shortest trip: ( 0.01;5;1 ) 1950km
+    shortest trip: 1659
+    number shortest trip: 0
+    average shortest trip: ( 0.02;4;1 ) 1955km
+    shortest trip: 1652
+    number shortest trip: 3
+    average shortest trip: ( 0.02;5;1 ) 1938km
+    shortest trip: 1652
+    number shortest trip: 4
+    average shortest trip: ( 0.02;6;1 ) 1943km
+    shortest trip: 1652
+    number shortest trip: 3
+    average shortest trip: ( 0.02;5;0 ) 4152km
+    shortest trip: 3422
+    number shortest trip: 0
+    average shortest trip: ( 0.02;5;1 ) 1930km
+    shortest trip: 1652
+    number shortest trip: 3
+    average shortest trip: ( 0.02;5;2 ) 1930km
+    shortest trip: 1652
+    number shortest trip: 1
+    average shortest trip: ( 0.02;10;3 ) 1973km
+    shortest trip: 1652
+    number shortest trip: 3
+
+Wir sehen, dass die bereits vorgegebenen Parameter (0.02, 5, 1) knapp die besten Ergebnisse erzielen - wir zweifeln etwas an der Sinnhaftigkeit der
+Bonusaufgabe.
+
+Warum ausgerechnet diese Parameter so besonders sind, können wir uns jedoch nicht erklären. 
+Klar ist: Eine zu hohe Mutationsrate sorgt wahrscheinlich für eine zu starke Durchmischung bereits bestehender korrekter Abschnitte in den Routen. 
+
+Zu große Crossover-Intervalllängen würden zur Zerstörung der Reihenfolge führen (da Parent1 und Parent2 gut und gerne doch sehr verschiedene Wege nehmen).
+Bei zu kleinen Intervallängen würde die Rekombination wenig Nutzen haben, da quasi die gesamte Reihenfolge aus dem zweiten Parent übernommen werden würde.
+
+Wir sind etwas ratlos, da die Aufgabenstellung eine deutlich bessere Parameterkombination vermuten lässt.
+
+Naja, wir wünschen jedenfalls viel Spaß bei der Betrachtung eines quasi identischen Graphen wie in 3.3f) 
