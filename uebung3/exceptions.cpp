@@ -88,6 +88,9 @@ void parseLine(std::string line, int lineNum)
 // TODO 3.1d
 void writeOutFormatException(const FormatException& e)
 {
+  if(e.m_actLine == 1){
+    return;
+  }
   std::ofstream logfile;
   std::ios_base::iostate exceptionMask = logfile.exceptions() | std::ios::failbit;
   logfile.exceptions(exceptionMask);
@@ -105,7 +108,7 @@ void checkData(std::string path)
 {
 	int validLines = 0;
 	int invalidLines = 0;
-  int linenumber = 1;
+  int linenumber = 2;
 	std::ifstream file;
   std::string line;
 
@@ -116,8 +119,7 @@ void checkData(std::string path)
 	try {
 		file.open(path);
     // Ignoring Header-Line
-    //std::getline(file, line);
-    
+    std::getline(file, line);
     while (!file.eof()) {
 
       std::getline(file, line);

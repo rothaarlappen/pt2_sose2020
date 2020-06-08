@@ -223,7 +223,7 @@ void calculateAverageRouteDistances(std::map<int, AirportInfo>& airportInfo)
       currentAirport.second.m_averageRouteLength = std::accumulate(
         currentAirport.second.m_routeLengths.begin(),
         currentAirport.second.m_routeLengths.end(),
-        0) / currentAirport.second.m_routes.size();
+        0.0) / currentAirport.second.m_routes.size();
     }
     else {
       currentAirport.second.m_averageRouteLength = 0.0;
