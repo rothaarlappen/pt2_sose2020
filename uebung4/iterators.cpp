@@ -4,6 +4,7 @@
 #include <string>
 #include <algorithm>
 #include <iterator>
+#include <cassert>
 
 // function template for printing contents of containers to std::cout
 template<class T>
@@ -20,21 +21,47 @@ void printContainer(T& container)
 template<class T>
 void front_back_pairing(T& inContainer, T& outContainer)
 {
-
+	auto i_b = inContainer.begin();
+	auto i_e = --(inContainer.end());
+	int switcher = 1;
+	int len = inContainer.size()+1;
+	while (len-switcher)
+		((switcher++)&1)?outContainer.push_back(*(i_b++)): outContainer.push_back(*(i_e--));
 }
 
 // TODO 4.2b - Remove all duplicates from the given container. Do *not* use the []-operator.
 template<class T>
 void remove_duplicates(T& container)
 {
-
+	sort( container.begin(), container.end() );
+	container.erase(unique(container.begin(), container.end()), container.end());
 }
 
 // TODO 4.2c - Expand the given container by inserting the numerical differences of each element to its neighbors. Do *not* use the []-operator.
 template<class T>
 void insert_differences(T& container)
 {
+	assert(container.size() > 1);
+	
+	int n = container.size();
+	container.insert(container.begin(), *(container.begin()) - *(--container.end())); 
 
+	long int delta1, delta2;
+
+	auto element1 = container.begin() +1;
+	auto element2 = element1 +1;
+
+	for(int i = 1; i < n; i++){
+		delta1 = *element2 - *element1;
+		delta2 = *element1 - *element2;
+
+		container.insert(element2, delta1);
+		container.insert(element2, delta2); 
+
+		element1 = container.begin() +(n*3) + 1;
+		element2 = element1+1;
+	}
+	
 }
 
 void testFrontBackPairingFunctionality()
