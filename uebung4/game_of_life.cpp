@@ -186,7 +186,7 @@ int cellValue(const Raster &raster, int x, int y, bool isTorus)
 	// In case isTorus is true and (x, y) is outside of raster use value of matching cell of opposite side
 	
 	// pixel in Raster?
-	if (x > 0 && x < raster.width && y > 0 && y < raster.height)
+	if (x >= 0 && x < raster.width && y >= 0 && y < raster.height)
 		return raster.data[(raster.width * y) +x];
 
 	if(isTorus){
