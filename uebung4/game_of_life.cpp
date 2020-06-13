@@ -32,11 +32,9 @@ struct Raster {
 	{
 		float dice;
 		data = new int[width*height];
-		for(int y = 0; y < w; y++){
-			for(int x = 0; x < h; x++){
+		for(int i = 0; i < width*height; i++){
 				dice = frand(0,1);
-				data[(y*width) + x] = (dice <= seedProbability) ? 1 : 0;
-			}
+				data[i] = (dice <= seedProbability) ? 1 : 0;
 		}
 		// TODO 4.1a: Fill randomly
 		// Probability of value 1 is seedProbability, otherwise value is 0
@@ -229,12 +227,12 @@ int aliveNeighborCount(const Raster &raster, int x, int y, bool isTorus) {
     int count = 0;
     if (raster.data[(y * raster.width)+x])
         count -= 1;
-     for(int check_x = x -1; check_x <= x +1 ; check_x++ ){
+    for(int check_x = x -1; check_x <= x +1 ; check_x++ ){
         for(int check_y =y -1; check_y <= y +1 ; check_y++ ){
         	count += cellValue(raster, check_x, check_y, isTorus);
         }
-     }
-     return count;
+    }
+    return count;
 }
 
 int shouldBeAlive(const Raster &raster, int x, int y, bool isTorus) {
