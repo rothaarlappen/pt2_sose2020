@@ -34,6 +34,7 @@ struct Raster {
 		data = new int[width*height];
 		for(int i = 0; i < width*height; i++){
 				dice = frand(0,1);
+				// @ Paul < oder <= ??? nicht sicher...
 				data[i] = (dice <= seedProbability) ? 1 : 0;
 		}
 		// TODO 4.1a: Fill randomly
@@ -215,8 +216,10 @@ void simulateInversion(Raster &raster, float inversionFactor)
 
 	for(int i = 0; i < raster.width * raster.height; i++){
 		dice = frand(0,1);
-		if(dice <= inversionFactor)
+		if(dice <= inversionFactor){
 			raster.data[i] ^= 1;
+		}
+			
 	}
 	// TODO 4.1c: Flip some cells randomly (probability to flip for each cell is inversionFactor)
 }
