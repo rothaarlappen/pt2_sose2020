@@ -82,8 +82,8 @@ struct Raster {
 		bitmap_image image(width, height);
 
 		
-		for (std::size_t y = 0; y < height; ++y){
-      		for (std::size_t x = 0; x < width;++x){
+		for (int y = 0; y < height; ++y){
+      		for (int x = 0; x < width; ++x){
          		rgb_t color;
 				if (data[(y*width) + x] == 0)
 					image.set_pixel(x, y, 255, 255, 255);
@@ -212,7 +212,14 @@ void simulateInversion(Raster &raster, float inversionFactor)
 	{
 		return;
 	}
+	
+	float dice;
 
+	for(int i = 0; i < raster.width * raster.height; i++){
+		dice = frand(0,1);
+		if(dice <= inversionFactor)
+			raster.data[i] ^= 1;
+	}
 	// TODO 4.1c: Flip some cells randomly (probability to flip for each cell is inversionFactor)
 }
 
@@ -244,12 +251,19 @@ int shouldBeAlive(const Raster &raster, int x, int y, bool isTorus) {
 void simulateNextState(Raster &raster, bool isTorus)
 {
 	// TODO 4.1b: Play one iteration of Game of Life
+	// Array for saving our new cell states:
+	int * data = (int *)malloc(sizeof(int)*raster.height*raster.width);
 	
 	for(int y = 0; y < raster.height; y++){
 		for(int x = 0; x < raster.width; x++){
-			raster.data[(y*raster.width)+x] = shouldBeAlive(raster, x, y, isTorus);
+			data[(y*raster.width)+x] = shouldBeAlive(raster, x, y, isTorus);
 		}
 	}
+	
+	// write new data into Raster struct
+	for(int i = 0; i < raster.width * raster.height; i++)
+		raster.data[i] = data[i];
+	free(data);
 }
 
 int main(int argc, char* argv[])
