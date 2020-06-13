@@ -2,25 +2,8 @@
 #include <cstring>
 #include <ctime>
 #include "bitmap_image.hpp"
-#include <random>
-#include <ctime>
 
-// random number in [a,b] range
-inline float frand(float a, float b) {
-	return a+((b-a) * (float)rand() / (float)RAND_MAX);
-}
 
-// struct handling the color coding:
-struct rgb_t{
-      unsigned char   red;
-      unsigned char green;
-      unsigned char  blue;
-};
-
-// black and white color
-
-rgb_t white_pixel {255,255,255};
-rgb_t black_pixel {0,0,0};
 
 struct Raster {
 	Raster(int w, int h) : width(w), height(h)
@@ -30,16 +13,22 @@ struct Raster {
 
 	Raster(int w, int h, float seedProbability) : width(w), height(h)
 	{
-		float dice;
 		data = new int[width*height];
-		for(int y = 0; y < w; y++){
-			for(int x = 0; x < h; x++){
-				dice = frand(0,1);
-				data[(y*width) + x] = (dice <= seedProbability) ? 1 : 0;
-			}
-		}
-		// TODO 4.1a: Fill randomly
-		// Probability of value 1 is seedProbability, otherwise value is 0
+
+			// TODO 4.1a: Fill randomly
+			// Probability of value 1 is seedProbability, otherwise value is 0
+			for (int i = 0; i < w * h; i++)
+			{
+				double r = ((double) rand() / (RAND_MAX )) ;
+				std::cout << std::to_string(r);
+
+				if (r < seedProbability)
+				{
+					data[i] = 1;
+				}else{
+					data[i] = 0;
+				}
+			}		
 	}
 
 	Raster(const std::string &filename)
@@ -59,20 +48,41 @@ struct Raster {
 		// TODO 4.1a: Load image by using image.get_pixel
 		// A black pixel represents 1, all other values represent 0
 
-		// assuming there are only black or white pixels, any color value == 0 results in the pixel 
-		// being white (as black == RGB(0,0,0))
-		int num_white = 0;
-		int num_black = 0;
-		for (std::size_t y = 0; y < height; ++y){
-      		for (std::size_t x = 0; x < width;++x){
-         		rgb_t color;
+		unsigned char r;
+		unsigned char g;
+		unsigned char b;
 
-         		image.get_pixel(x, y, color.red, color.green, color.blue);
-				data[(y*width) + x] = (color.blue > 0) ? 0 : 1;
-				// std::cout << color.red <<color.green <<color.blue  << std::endl;
-      		}	
-  		}
-		// std::cout << num_white << "  ||  " << num_black << std::endl;
+		int x = 0;
+		int y = 0;
+
+		for (int i = 0; i < width * height; i++){			
+			image.get_pixel(x, y, r, g ,b);
+				if ((int)r == 0 && (int)g == 0 && (int)b == 0)
+				{
+					data[i] = 1;
+				}else{
+					data[i] = 0;
+				}
+			if(x<width-1){
+				x++;
+			}else{
+				x = 0;
+				y++;
+			}
+		}
+
+
+		//NICE DEBUG FUNCTION
+		int i = 0;
+		std::cout << "Our Array: \n";
+		for (int j = 1; j < height+1; j++)
+		{
+			for(i; i < width*j; i++){
+				std::cout << std::to_string(data[i]);
+			}
+			std::cout << "\n";
+
+		}
 	}
 
 	void save(const std::string &filename)
@@ -81,18 +91,24 @@ struct Raster {
 		// Living cells should be stored as black pixels, all other pixels are white
 		bitmap_image image(width, height);
 
-		
-		for (std::size_t y = 0; y < height; ++y){
-      		for (std::size_t x = 0; x < width;++x){
-         		rgb_t color;
-				if (data[(y*width) + x] == 0)
-					image.set_pixel(x, y, 255, 255, 255);
-				else
-					image.set_pixel(x, y, 0, 0, 0);
-				
-				// std::cout << color.red <<color.green <<color.blue  << std::endl;
-      		}
-  		}
+		int x = 0;
+		int y = 0;
+
+		for (int i = 0; i < width * height; i++){			
+				if (data[i] == 0)
+				{
+					image.set_pixel(x,y, 255,255,255);
+				}else{
+					image.set_pixel(x,y, 0,0,0);
+				}
+			if(x<width-1){
+				x++;
+			}else{
+				x = 0;
+				y++;
+			}
+		}
+
 		image.save_image(filename);
 	}
 
@@ -184,25 +200,21 @@ struct CommandLineParameter
 int cellValue(const Raster &raster, int x, int y, bool isTorus)
 {
 	// TODO 4.1b: Return whether cell is alive (1) or not (0)
-	// In case isTorus is false and (x, y) is outside of raster, return 0
+	// In case isTorus is false and (x, y) is outside of raster, return 0                                          DONE
 	// In case isTorus is true and (x, y) is outside of raster use value of matching cell of opposite side
-	
-	// pixel in Raster?
-	if (x > 0 && x < raster.height && y > 0 && y < raster.width)
-		return raster.data[(raster.width * y) +x];
 
+	
 	if(isTorus){
-		if ( x >= raster.width)
-        	x -= raster.width;
-		if ( x < 0)
-			x += raster.width;
-		if (y >= raster.height)
-			y -= raster.height;
-		if (y < 0)
-			y += raster.height;
-		return raster.data[(raster.width * y) +x];
+
+	}else{
+		//Check if outside of boundaries
+		if(x < 0 || y < 0 || x > raster.width-1 || y > raster.height-1){
+			return 0;
+		}
+
+		return raster.data[x+(y*raster.width)];
 	}
-	// Wenn Pixel nicht im Raster liegt und Torus deaktiviert ist:
+
 	return 0;
 }
 
@@ -216,40 +228,53 @@ void simulateInversion(Raster &raster, float inversionFactor)
 	// TODO 4.1c: Flip some cells randomly (probability to flip for each cell is inversionFactor)
 }
 
-
-// returns the amount of alive neighbours in 3 x 3 circumfence
-int aliveNeighborCount(const Raster &raster, int x, int y, bool isTorus) {
-    int count = 0;
-    if (raster.data[(y * raster.width)+x])
-        count -= 1;
-     for(int check_x = x -1; check_x <= x +1 ; check_x++ ){
-        for(int check_y =y -1; check_y <= y +1 ; check_y++ ){
-        	count += cellValue(raster, check_x, check_y, isTorus);
-        }
-     }
-     return count;
-}
-
-int shouldBeAlive(const Raster &raster, int x, int y, bool isTorus) {
-    int nachbarn = aliveNeighborCount(raster, x, y, isTorus);
-    if(raster.data[(y*raster.width) + x]){
-        if ((nachbarn >= 2) && (nachbarn < 4))
-            return 1;
-        return 0;
-    }else if ( nachbarn == 3)
-        return 1;
-    return 0;
-}
-
 void simulateNextState(Raster &raster, bool isTorus)
 {
 	// TODO 4.1b: Play one iteration of Game of Life
 	
-	for(int y = 0; y < raster.height; y++){
-		for(int x = 0; x < raster.width; x++){
-			raster.data[(y*raster.width)+x] = shouldBeAlive(raster, x, y, isTorus);
+	int x = 0;
+	int y = 0;
+
+	for (int i = 0; i < raster.height * raster.width ; i++){
+		int alive_neighbour_count = 0;
+
+		//upper row
+		alive_neighbour_count = alive_neighbour_count + cellValue(raster, x-1, y-1, isTorus); //Sollte stimmen
+		alive_neighbour_count = alive_neighbour_count + cellValue(raster, x, y-1, isTorus); //Sollte stimmen
+		alive_neighbour_count = alive_neighbour_count + cellValue(raster, x+1, y-1, isTorus); //Sollte stimmen
+
+		//same row
+		alive_neighbour_count = alive_neighbour_count + cellValue(raster, x-1, y, isTorus); //Sollte stimmen
+		alive_neighbour_count = alive_neighbour_count + cellValue(raster, x+1, y, isTorus);	// Sollte stimmen
+
+		//lower row
+		alive_neighbour_count = alive_neighbour_count + cellValue(raster, x-1, y+1, isTorus); //Sollte stimmen
+		alive_neighbour_count = alive_neighbour_count + cellValue(raster, x, y+1, isTorus); // Sollte stimmen
+		alive_neighbour_count = alive_neighbour_count + cellValue(raster, x+1, y+1, isTorus);
+
+		if(x<raster.width-1){
+			x++;
+		}else{
+			x = 0;
+			y++;
 		}
+
+		std::cout << "CellNumber: " << std::to_string(i) << " Alive Count: "<< std::to_string(alive_neighbour_count);
+
+		//Hier die ganzen Regeln implementieren
+		if(raster.data[i]){
+			if(alive_neighbour_count < 2 || alive_neighbour_count > 3){
+				raster.data[i] = 0;
+			}
+		}else{
+			if(alive_neighbour_count == 3){
+				raster.data[i] = 1; //Gets alived. Perfect english. Nice. 69. Nice.
+			}
+		}
+
 	}
+
+	
 }
 
 int main(int argc, char* argv[])
@@ -257,7 +282,7 @@ int main(int argc, char* argv[])
 	Raster* raster = nullptr;
 
 	// TODO 4.1a: Initialize random seed
-	srand (time(NULL));
+	srand(time(NULL));
 
 	CommandLineParameter cmd(argc, argv);
 	if (!cmd.patternFilename.empty())
