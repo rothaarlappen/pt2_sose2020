@@ -76,7 +76,12 @@ void importRoutesData(char* path, std::vector<Route>& routes)
 int linearSearch(int destID, std::vector<Route>& routes, long long& numLookups)
 {
 	int numRoutes = 0;
-
+	for(int i = 0; i < routes.size(); i++){
+		numLookups++;
+		if(routes[i].destinationId == destID){
+			numRoutes++;
+		}
+	}
 	return numRoutes;
 }
 
@@ -87,7 +92,13 @@ std::pair<long long, long long> evaluateLinearSearch(std::vector<Route>& routes)
 {
 	long long numLookups = 0;
 	long long duration = 0;
+	auto start = std::chrono::steady_clock::now();	
+	for(int i = 1; i <= 9541; i++){
+		int numRoutes = linearSearch(i, routes, numLookups);
+	}
+	auto end = std::chrono::steady_clock::now();
 
+	duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 	return std::make_pair(numLookups, duration);
 }
 
@@ -95,7 +106,32 @@ std::pair<long long, long long> evaluateLinearSearch(std::vector<Route>& routes)
 // The vector should have been sorted before calling this function.
 int binarySearch(int destID, std::vector<Route>& routes, long long& numLookups)
 {
-	return 0;
+	int numRoutes = 0;
+
+	int intervalStart = 0;
+	int intervalEnd = routes.size() - 1;
+
+	while(intervalStart <= intervalEnd){
+		int intervalMid = (intervalStart + intervalEnd) / 2;
+		numLookups += 3;
+		
+		if(routes[intervalMid].destinationId < destID){
+			numLookups++;
+			intervalStart = intervalMid + 1;
+		} else if (routes[intervalMid].destinationId > destID){
+			numLookups += 2;
+			intervalEnd = intervalMid - 1;
+		} else {
+			//std::cout << intervalMid << std::endl;
+			numLookups += 3;
+			intervalStart = intervalMid;
+			while(routes[--intervalStart].destinationId == destID) { numRoutes++; numLookups++; }
+			while(routes[intervalMid++].destinationId == destID) { numRoutes++; numLookups++; }
+			break;
+		}
+	}
+
+	return numRoutes;
 }
 
 // TODO 4.3b - Evaluate the binarySearch function by calling it for every possible destination id (1..9541).
@@ -106,7 +142,15 @@ std::pair<long long, long long> evaluateBinarySearch(std::vector<Route>& routes)
 {
 	long long numLookups = 0;
 	long long duration = 0;
+	std::sort(routes.begin(), routes.end());
 
+	auto start = std::chrono::steady_clock::now();
+	for(int i = 0; i < routes.size(); i++){
+		int numRoutes = binarySearch(i, routes, numLookups);
+	}
+	auto end = std::chrono::steady_clock::now();
+
+	duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 	return std::make_pair(numLookups, duration);
 }
 
