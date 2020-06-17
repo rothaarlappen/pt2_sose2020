@@ -118,15 +118,14 @@ int binarySearch(int destID, std::vector<Route>& routes, long long& numLookups)
 			numLookups += 1;
 			intervalStart = intervalMid + 1;
 		} else if (routes[intervalMid].destinationId > destID){
-			// numLookups += 2;
+			numLookups += 2;
 			intervalEnd = intervalMid - 1;
 		} else {
-			//std::cout << intervalMid << std::endl;
-			// numLookups += 2;
+			numLookups += 2;
 			intervalStart = intervalMid;
-			while(routes[--intervalStart].destinationId == destID) { numRoutes++; /* numLookups++; */}
-			while(routes[intervalMid++].destinationId == destID) { numRoutes++; /* numLookups++; */ }
-			break;
+			while(routes[--intervalStart].destinationId == destID) { numRoutes++; numLookups++; }
+			while(routes[intervalMid++].destinationId == destID) { numRoutes++; numLookups++; }
+			return numRoutes;
 		}
 	}
 
@@ -142,7 +141,8 @@ std::pair<long long, long long> evaluateBinarySearch(std::vector<Route>& routes)
 	long long numLookups = 0;
 	long long duration = 0;
 	auto start = std::chrono::steady_clock::now();
-	for(int i = 0; i < routes.size(); i++){
+	std::cout << "Routesize" << routes.size() << std::endl;
+	for(int i = 1; i < 9541; i++){
 		int numRoutes = binarySearch(i, routes, numLookups);
 	}
 	auto end = std::chrono::steady_clock::now();
@@ -168,7 +168,7 @@ int main(int argc, char * argv[])
 	auto result = evaluateLinearSearch(routes);
 	std::cout << result.first << " - " << result.second << std::endl;
 
-	std::sort(routes.begin(), routes.end(), operator<);
+	std::sort(routes.begin(), routes.end());
 	result = evaluateBinarySearch(routes);
 	std::cout << result.first << " - " << result.second << std::endl;
 

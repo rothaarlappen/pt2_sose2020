@@ -1,10 +1,13 @@
 Suchen und Sortieren: 
+(
 1.  "Wir sortieren, um zu suchen", sagte schon unser PT1 - Professor. 
     Erklären Sie was er damit meinte. Wann lohnt es sich eine 1000-Elementiges Array
     zu sortieren, wann eines mit 1.000.000 Einträgen? 
+)
+
 
 2.  Upsala, da hat wohl jemand zu viel mit der "front_back_pairing" Funktion rumgespielt und 
-    nun sind ist unser schön sortierter Integer-Vector durcheinandergeraten. 
+    nun ist unser schön sortierter Integer-Vector durcheinandergeraten. 
 
     Er hat nun die Form    integerVec = {c0, cN−1, c1, cN−2, . . .}
 
@@ -13,19 +16,21 @@ Suchen und Sortieren:
 
     Lösungsansatz: 
         Gibt wahrscheinlich sehr viele Lösungen und vielleicht ist die Aufgabe auch etwas zu
-        einfach. Uns fiel jetzt folgendes ein: 
+        einfach. Uns fiel jetzt aber zum Beispiel folgendes ein: 
 
         vector<int> sortedVec (integerVec.size());
 
         auto begin = sortedVec.begin();
         auto end = sortedVec.end();
 
+        int i = 0;
         for(auto integer : integerVec){
             if(i % 2){
-                *begin++ = integer;
-            } else {
                 *(--end) = integer;
+            } else {
+                *begin++ = integer;
             }
+            i++;
         }
 
 Programmierparadigmen: 
