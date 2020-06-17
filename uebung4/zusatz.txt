@@ -36,4 +36,10 @@ Suchen und Sortieren:
 
 Programmierparadigmen: 
     
+3. Du möchtest für die neue Turbine von Siemens einen möglichst effektiven Rotor designen.
+   Welches Programmierparadigma wählst du, und warum?
 
+   Lösungsansatz:
+    - Man wähle die genetische Programmierung, da man für dieses Problem keinen konkreten Lösungsansatz hat, 
+      man aber sehr wohl die verschiedenen Design bewerten, also die Fitness bilden kann. Diese orientiert 
+      sich dann zum Beispiel an Effizienz, Baukosten, Größe oder anderen relevanten Faktoren.
