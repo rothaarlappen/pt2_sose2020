@@ -168,7 +168,7 @@ int main(int argc, char * argv[])
 	auto result = evaluateLinearSearch(routes);
 	std::cout << result.first << " - " << result.second << std::endl;
 
-	std::sort(routes.begin(), routes.end());
+	std::sort(routes.begin(), routes.end(), operator<);
 	result = evaluateBinarySearch(routes);
 	std::cout << result.first << " - " << result.second << std::endl;
 
