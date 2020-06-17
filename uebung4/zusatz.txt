@@ -1,4 +1,5 @@
 Suchen und Sortieren: 
+
 (
 1.  "Wir sortieren, um zu suchen", sagte schon unser PT1 - Professor. 
     Erklären Sie was er damit meinte. Wann lohnt es sich eine 1000-Elementiges Array
