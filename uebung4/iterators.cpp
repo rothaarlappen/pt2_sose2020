@@ -26,14 +26,14 @@ void front_back_pairing(T& inContainer, T& outContainer)
 	int switcher = 1;
 	int len = inContainer.size()+1;
 	while (len-switcher)
-		((switcher++)&1)?outContainer.push_back(*(i_b++)): outContainer.push_back(*(i_e--));
+		((switcher++)&1) ? outContainer.push_back(*(i_b++)) : outContainer.push_back(*(i_e--));
 }
 
 // TODO 4.2b - Remove all duplicates from the given container. Do *not* use the []-operator.
 template<class T>
 void remove_duplicates(T& container)
 {
-	sort( container.begin(), container.end() );
+	sort(container.begin(), container.end());
 	container.erase(unique(container.begin(), container.end()), container.end());
 }
 
@@ -43,26 +43,24 @@ void insert_differences(T& container)
 {
 	assert(container.size() > 1);
 	
-	int n = container.size();
-	container.insert(container.begin(), *(container.begin()) - *(--container.end())); 
+	int containerSize = container.size();
 
-	long int delta1, delta2;
+	// Inserten der für die Zirkularität notwendigen Elemente vone und hinten. 
+	auto firstElement = container.begin();
+	auto lastElement = --(container.end());
+	container.insert(firstElement, *lastElement - *firstElement);
+	container.push_back(*container.begin() * (-1));
 
-	auto element1 = container.begin() +1;
-	auto element2 = element1 +1;
-
-	for(int i = 1; i < n; i++){
-		delta1 = *element2 - *element1;
-		delta2 = *element1 - *element2;
-
-		container.insert(element2, delta1);
-		container.insert(element2, delta2); 
-
-		element1 = container.begin() +(n*3) + 1;
-		element2 = element1+1;
-	}
+	auto currentElement = container.begin() + 2;
 	
+	for(int i = 1; i < containerSize; i++){
+		container.insert(currentElement, *(currentElement - 1) - (*currentElement));
+		auto insertedElement = container.begin() + (2) + (3*(i-1));
+		container.insert(insertedElement, *(insertedElement) * (-1));
+		currentElement = container.begin() + 2 + (3 * i);
+	}
 }
+
 
 void testFrontBackPairingFunctionality()
 {
