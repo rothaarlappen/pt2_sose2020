@@ -28,3 +28,6 @@ Suchen und Sortieren:
             }
         }
 
+Programmierparadigmen: 
+    
+

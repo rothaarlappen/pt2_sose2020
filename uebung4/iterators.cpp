@@ -25,7 +25,9 @@ void front_back_pairing(T& inContainer, T& outContainer)
 	auto i_e = --(inContainer.end());
 	int switcher = 1;
 	int len = inContainer.size()+1;
-	while (len-switcher)
+
+	while (len-switcher) 
+		// (switcher++)&1 -> false if switcher is an even number, true if odd. 
 		((switcher++)&1) ? outContainer.push_back(*(i_b++)) : outContainer.push_back(*(i_e--));
 }
 
