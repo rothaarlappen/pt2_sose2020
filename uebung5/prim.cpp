@@ -6,7 +6,7 @@
 #include <cassert>
 #include <experimental/iterator>
 #include <math.h>  
-
+#include <climits>
 
 // small test data (graph example from lecture slides)
 const int N1 = 6;
@@ -107,9 +107,14 @@ std::ostream & operator<<(std::ostream& os, const std::vector<Edge>& E) {
     return os;
 }
 bool operator==(const Edge e1, const Edge e2){
-    if((e1.vi1 == e2.vi1) && (e1.vi2 == e2.vi2) && (e1.weight == e2.weight)){
+    if((e1.vi1 == e2.vi1) && (e1.vi2 == e2.vi2) && (e1.weight == e2.weight))
         return true;
-    }
+    return false;
+}
+
+bool operator==(const Vertex v1, const Vertex v2){
+    if(v1.index == v2.index)
+        return true;
     return false;
 }
 
@@ -132,43 +137,52 @@ void createGraph(Graph& G) {
         }
         // - edges are bidirectional, that is, edges are inserted only once between two vertices
     }
-    for(int i = 0; i < G.E.size(); i++){
-        std::cout << "Knoten1: " << G.E[i].vi1 << " Knoten2: " << G.E[i].vi2 << " Weight: " << G.E[i].weight << std::endl;
-    }
-    std::cout << "Number of Edges: " << G.E.size() << std::endl;
 }
 
 // return added weights of a list of edges
 int totalWeight(const std::vector<Edge>& E) {
     int weight = 0;
     for(int i = 0; i < E.size(); i++){
-        weight *= E[i].weight;
+        weight += E[i].weight;
     }
     return weight;
 }
 
+
+Vertex findVertexWithLowestKey(std::vector<Vertex>& workingSet){
+    Vertex smallestKeyVertex = workingSet[0];
+    for(int i = 0; i < workingSet.size(); i++){
+        if(workingSet[i].key < smallestKeyVertex.key)
+            smallestKeyVertex = workingSet[i];
+    }
+    return smallestKeyVertex;
+}
+
 void prim(Graph& G) {
     G.MST.clear();
+    
     G.V[0].key = 0; // arbitrarily defined start vertex, taken to V'
 
-    for(int i = 0; i < G.N-1; i++){
-        for(auto currentEdge : G.E){
-            if(currentEdge.vi1 == i){
-                if(G.V[currentEdge.vi2].key < currentEdge.weight){
-                    G.V[currentEdge.vi2].key = currentEdge.weight;
-                    G.V[currentEdge.vi2].parent_index = currentEdge.vi1;
-                }
-            } else if (currentEdge.vi2 == i){
-                if(G.V[currentEdge.vi1].key < currentEdge.weight){
-                    G.V[currentEdge.vi1].key = currentEdge.weight;
-                    G.V[currentEdge.vi1].parent_index = currentEdge.vi2;
-                }
+    std::vector<Vertex> secondVerticesVector;
+
+    while(G.V.size() > 0){
+        Vertex u = findVertexWithLowestKey(G.V);
+        G.V.erase(std::remove(G.V.begin(), G.V.end(), u), G.V.end());
+        secondVerticesVector.push_back(u);
+
+        if(u.parent_index != -1){
+            G.MST.push_back(Edge(u.index, u.parent_index, getWeight(G, u.index, u.parent_index)));
+        }
+
+        for(auto& currentEdge : G.V){
+            int weigth = getWeight(G, u.index, currentEdge.index);
+            if(weigth > 0 && weigth < currentEdge.key){
+                currentEdge.key = getWeight(G, u.index, currentEdge.index);
+                currentEdge.parent_index = u.index;
             }
         }
+
     }
-
-    
-
 
     // TODO 5.1c: implement prim algorithm
 }
