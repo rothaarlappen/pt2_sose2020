@@ -10,9 +10,10 @@ struct Interval
 	: index(i)
 	, start(start)
 	, end(start + length - 1)
+	, length(length)
 	{
 	}
-
+	int length; 
 	int index;
 	int start;
 	int end;
@@ -33,9 +34,9 @@ std::ostream & operator<<(std::ostream& os, const std::vector<Interval>& I)
 		if(!(I[i].index/10)) os << " ";
 		os << char(221);
 		for(; j < I[i].start; j++) os << "-";
-		for(; j < I[i].end; j++) os << char(219);
+		for(; j <= I[i].end; j++) os << char(219);
 		for(; j < MaxEnd; j++) os << "-";
-		os << char(221) << std::endl;
+		os << char(221) << I[i].start << ", " << I[i].end << " length: " << I[i].length <<  std::endl;
 	}
 	return os;
 }
@@ -59,32 +60,28 @@ bool operator<(const Interval& i1, const Interval& i2) {
 	return i1.end < i2.end;
 }
 
-// auto sortIntervals(std::vector<Interval>& intervals){
-// 	std::sort(intervals.begin(), intervals.end());
-// 	return intervals;
-// }
+std::vector<Interval> scheduleSortedIntervalVector(std::vector<Interval>& sortedIntervals){
+	auto scheduled = std::vector<Interval>();
+	auto itr = sortedIntervals.begin();
+	while(itr != sortedIntervals.end()){
+		if(scheduled.size() == 0 || ((*itr).start > (*(--scheduled.end())).end))
+			scheduled.push_back(*itr);
+		itr++;
+	}
+	return scheduled;
+}
 
 void schedule(const std::vector<Interval>& intervals)
 {
 	std::cout << std::endl << "Intervals (randomized):" << std::endl << intervals;
-
-
+	
 	// TODO 5.3: Sort intervals
-	// std::sort(intervals.begin(), intervals.end());
 	auto sorted = intervals;
 	std::sort(sorted.begin(), sorted.end());
 	std::cout << std::endl << "Intervals (sorted):" << std::endl << sorted;
 
-
 	// TODO 5.3: Implement greedy scheduling
-	auto scheduled = std::vector<Interval>();
-	scheduled.push_back(sorted[0]);
-	auto iter = sorted.begin()++;
-	while(iter != sorted.end()){
-		if((*iter).start >= (*(--scheduled.end())).end)
-			scheduled.push_back(*iter);
-		iter++;
-	}
+	auto scheduled = scheduleSortedIntervalVector(sorted);
 
 	std::cout << std::endl << "Intervals (scheduled, " << scheduled.size() << " of " << sorted.size() << " possible)"
 		<< std::endl << scheduled << std::endl;
