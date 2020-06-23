@@ -120,6 +120,10 @@ void createGraph(Graph& G) {
     G.V.clear();
 
     // - vertices are numbered (labeled) from 0 to N-1
+    for(int i = 0; i < G.N; i++){
+        G.V.push_back(Vertex(i));
+    }
+
     for(int i = 0; i < G.N*G.N; i++){
         if(G.weights_table[i] > 0){
             if(std::find(G.E.begin(), G.E.end(), Edge(i%G.N, i/G.N, getWeight(G, i%G.N, i/G.N))) == G.E.end()){
@@ -146,7 +150,26 @@ int totalWeight(const std::vector<Edge>& E) {
 void prim(Graph& G) {
     G.MST.clear();
     G.V[0].key = 0; // arbitrarily defined start vertex, taken to V'
+
+    for(int i = 0; i < G.N-1; i++){
+        for(auto currentEdge : G.E){
+            if(currentEdge.vi1 == i){
+                if(G.V[currentEdge.vi2].key < currentEdge.weight){
+                    G.V[currentEdge.vi2].key = currentEdge.weight;
+                    G.V[currentEdge.vi2].parent_index = currentEdge.vi1;
+                }
+            } else if (currentEdge.vi2 == i){
+                if(G.V[currentEdge.vi1].key < currentEdge.weight){
+                    G.V[currentEdge.vi1].key = currentEdge.weight;
+                    G.V[currentEdge.vi1].parent_index = currentEdge.vi2;
+                }
+            }
+        }
+    }
+
     
+
+
     // TODO 5.1c: implement prim algorithm
 }
 
