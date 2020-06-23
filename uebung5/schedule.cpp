@@ -25,8 +25,18 @@ const static int N = 20;
 
 std::ostream & operator<<(std::ostream& os, const std::vector<Interval>& I)
 {
+
 	// TODO 5.3: Implement a nice print function
-	os << I.size() << std::endl;
+	for(int i = 0; i < I.size(); i++){
+		int j = 0;
+		os << "#" << I[i].index << " ";
+		if(!(I[i].index/10)) os << " ";
+		os << char(221);
+		for(; j < I[i].start; j++) os << "-";
+		for(; j < I[i].end; j++) os << char(219);
+		for(; j < MaxEnd; j++) os << "-";
+		os << char(221) << std::endl;
+	}
 	return os;
 }
 
@@ -45,21 +55,36 @@ void randomize(std::vector<Interval>& intervals)
 	}
 }
 
+bool operator<(const Interval& i1, const Interval& i2) {
+	return i1.end < i2.end;
+}
+
+// auto sortIntervals(std::vector<Interval>& intervals){
+// 	std::sort(intervals.begin(), intervals.end());
+// 	return intervals;
+// }
+
 void schedule(const std::vector<Interval>& intervals)
 {
 	std::cout << std::endl << "Intervals (randomized):" << std::endl << intervals;
 
 
 	// TODO 5.3: Sort intervals
+	// std::sort(intervals.begin(), intervals.end());
 	auto sorted = intervals;
-
-
+	std::sort(sorted.begin(), sorted.end());
 	std::cout << std::endl << "Intervals (sorted):" << std::endl << sorted;
 
 
 	// TODO 5.3: Implement greedy scheduling
 	auto scheduled = std::vector<Interval>();
-
+	scheduled.push_back(sorted[0]);
+	auto iter = sorted.begin()++;
+	while(iter != sorted.end()){
+		if((*iter).start >= (*(--scheduled.end())).end)
+			scheduled.push_back(*iter);
+		iter++;
+	}
 
 	std::cout << std::endl << "Intervals (scheduled, " << scheduled.size() << " of " << sorted.size() << " possible)"
 		<< std::endl << scheduled << std::endl;
