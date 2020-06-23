@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <limits>
 #include <cassert>
+#include <experimental/iterator>
+#include <math.h>  
 
 
 // small test data (graph example from lecture slides)
@@ -104,26 +106,47 @@ std::ostream & operator<<(std::ostream& os, const std::vector<Edge>& E) {
     os << "}";
     return os;
 }
+bool operator==(const Edge e1, const Edge e2){
+    if((e1.vi1 == e2.vi1) && (e1.vi2 == e2.vi2) && (e1.weight == e2.weight)){
+        return true;
+    }
+    return false;
+}
 
 // construct vertices and edges for a given graph
 void createGraph(Graph& G) {
     // TODO 5.1a: clear V and E and insert all vertex objects and edge objects
+    G.E.clear();
+    G.V.clear();
+
     // - vertices are numbered (labeled) from 0 to N-1
-    // - edges exist if and only if there is positive distance between two vertices
-    // - edges are bidirectional, that is, edges are inserted only once between two vertices
+    for(int i = 0; i < G.N*G.N; i++){
+        if(G.weights_table[i] > 0){
+            if(std::find(G.E.begin(), G.E.end(), Edge(i%G.N, i/G.N, getWeight(G, i%G.N, i/G.N))) == G.E.end()){
+                G.E.push_back(Edge(i/G.N, i%G.N, getWeight(G, i/G.N, i%G.N)));
+            }
+        }
+        // - edges are bidirectional, that is, edges are inserted only once between two vertices
+    }
+    for(int i = 0; i < G.E.size(); i++){
+        std::cout << "Knoten1: " << G.E[i].vi1 << " Knoten2: " << G.E[i].vi2 << " Weight: " << G.E[i].weight << std::endl;
+    }
+    std::cout << "Number of Edges: " << G.E.size() << std::endl;
 }
 
 // return added weights of a list of edges
 int totalWeight(const std::vector<Edge>& E) {
-    // TODO 5.1b: total weight accumulated over a given list of edges
-
-    return 0;
+    int weight = 0;
+    for(int i = 0; i < E.size(); i++){
+        weight *= E[i].weight;
+    }
+    return weight;
 }
 
 void prim(Graph& G) {
     G.MST.clear();
     G.V[0].key = 0; // arbitrarily defined start vertex, taken to V'
-
+    
     // TODO 5.1c: implement prim algorithm
 }
 
