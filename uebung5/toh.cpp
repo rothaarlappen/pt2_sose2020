@@ -6,7 +6,7 @@
 #include <cstring>
 #include <cmath>
 
-static const auto N = 3;
+static const auto N = 4;
 
 using Tower = std::pair<char, std::vector<int>>;
 auto A = Tower(static_cast<unsigned char>('A'), std::vector<int>());
@@ -45,6 +45,10 @@ void print()
             ausgabe[y-2][i + (offset * (x+1))] = char(219);
             ausgabe[y-1][i + (offset * (x+1))] = char(219);
         }
+        
+        ausgabe[y-1][N] = 'A';
+        ausgabe[y-1][(x+1) + N ] = 'B';
+        ausgabe[y-1][2 * (x+1) + N ] = 'C';
         
         // make poles:
         for(int i = 0; i < pole_length; i++)
