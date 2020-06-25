@@ -6,7 +6,7 @@
 #include <cstring>
 #include <cmath>
 
-static const auto N = 4;
+static const auto N = 3;
 
 using Tower = std::pair<char, std::vector<int>>;
 auto A = Tower(static_cast<unsigned char>('A'), std::vector<int>());
@@ -56,6 +56,7 @@ void print()
             ausgabe[i][offset * (x+1) + N] = char(219);
         }
         
+        // make disks:
         int disk;
         for(int i = 0; i < towers[offset].second.size(); i++)
         {   
