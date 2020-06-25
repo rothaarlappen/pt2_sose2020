@@ -26,17 +26,16 @@ const static int N = 20;
 
 std::ostream & operator<<(std::ostream& os, const std::vector<Interval>& I)
 {
-
 	// TODO 5.3: Implement a nice print function
 	for(int i = 0; i < I.size(); i++){
 		int j = 0;
 		os << "#" << I[i].index << " ";
 		if(!(I[i].index/10)) os << " ";
-		os << char(221);
+		os << "|";
 		for(; j < I[i].start; j++) os << "-";
 		for(; j <= I[i].end; j++) os << char(219);
-		for(; j < MaxEnd; j++) os << "-";
-		os << char(221) << I[i].start << ", " << I[i].end << " length: " << I[i].length <<  std::endl;
+		for(; j <= MaxEnd; j++) os << "-";
+		os << "|" <<  std::endl;
 	}
 	return os;
 }

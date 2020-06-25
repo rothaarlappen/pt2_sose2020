@@ -111,7 +111,6 @@ bool operator==(const Edge e1, const Edge e2){
         return true;
     return false;
 }
-
 bool operator==(const Vertex v1, const Vertex v2){
     if(v1.index == v2.index)
         return true;
@@ -131,11 +130,11 @@ void createGraph(Graph& G) {
 
     for(int i = 0; i < G.N*G.N; i++){
         if(G.weights_table[i] > 0){
+            // - edges are bidirectional, that is, edges are inserted only once between two vertices
             if(std::find(G.E.begin(), G.E.end(), Edge(i%G.N, i/G.N, getWeight(G, i%G.N, i/G.N))) == G.E.end()){
                 G.E.push_back(Edge(i/G.N, i%G.N, getWeight(G, i/G.N, i%G.N)));
             }
         }
-        // - edges are bidirectional, that is, edges are inserted only once between two vertices
     }
 }
 
@@ -175,13 +174,12 @@ void prim(Graph& G) {
         }
 
         for(auto& currentEdge : G.V){
-            int weigth = getWeight(G, u.index, currentEdge.index);
-            if(weigth > 0 && weigth < currentEdge.key){
+            int weight = getWeight(G, u.index, currentEdge.index);
+            if(weight > 0 && weight < currentEdge.key){
                 currentEdge.key = getWeight(G, u.index, currentEdge.index);
                 currentEdge.parent_index = u.index;
             }
         }
-
     }
 
     // TODO 5.1c: implement prim algorithm
