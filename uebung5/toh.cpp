@@ -42,9 +42,13 @@ void print()
         // make bottom:
         for(int i = 0; i < x; i++)
         {
-            ausgabe[y-2][i +( offset*(x+1))] = char(219);
-            ausgabe[y-1][i +( offset*(x+1))] = char(219);
+            ausgabe[y-2][i + (offset * (x+1))] = char(219);
+            ausgabe[y-1][i + (offset * (x+1))] = char(219);
         }
+        
+        ausgabe[y-1][N] = 'A';
+        ausgabe[y-1][(x+1) + N ] = 'B';
+        ausgabe[y-1][2 * (x+1) + N ] = 'C';
         
         // make poles:
         for(int i = 0; i < pole_length; i++)
@@ -52,14 +56,15 @@ void print()
             ausgabe[i][offset * (x+1) + N] = char(219);
         }
         
+        // make disks:
         int disk;
         for(int i = 0; i < towers[offset].second.size(); i++)
         {   
             disk = towers[offset].second[i];
             for(int d_size = 0; d_size < disk; d_size++)
             {
-                ausgabe[y-4 - (i * 2)][offset * (x+1) + N +d_size+1] = char(219);
-                ausgabe[y-4 - (i * 2)][offset * (x+1) + N -d_size-1] = char(219);
+                ausgabe[y-4 - (i * 2)][offset * (x+1) + N + d_size + 1] = char(219);
+                ausgabe[y-4 - (i * 2)][offset * (x+1) + N - d_size - 1] = char(219);
             }
         }
     }
@@ -71,7 +76,7 @@ void print()
     for(int i = 0; i < y; i++)
         std::cout << ausgabe[i] << std::endl;
 	std::cout << std::endl << std::endl;
-    
+
 }
 
 void ToH(const int n, Tower &beg, Tower &aux, Tower &end, int &moves)
