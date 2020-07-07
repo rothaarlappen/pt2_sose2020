@@ -1,0 +1,55 @@
+Aufgabe: 
+In der Vorlesung wurden verschiedene Algorithmen besprochen. Unter anderem ein
+Algorithmus für die Wechselgeldausgabe. Wir haben gesehen, dass der Greedyalgorithmus
+an seine Grenzen stößt, wenn wir nur noch Münzen mit dem Wert 4 oder 5 zur Verfügung
+haben und wir den Wert 21 ausgeben sollen (5 + 5 + 5 + 5.... "Error" obwohl 5 + 4 + 4 + 4 + 4 mögliche Lösung wär)
+
+Schreibe nun einen Algorithmus, der dieses Problem mithilfe von Backtracking löst.
+Das Programm soll für den Vector mit den verfügbaren Münzen und eine Nutzereingabe ermitteln, ob
+eine passende Auszahlung möglich ist. Falls ja, sollen die Münzen auszugeben Münuen auf der Konsole ausgegeben werden. 
+
+
+
+Lösung (siehe auch zusatz.cpp):
+// Eventuell Schwierigkeitsgrad erhöhen durch Verlangen von Argument-Parsing bzw. ohne den Hinweis
+// das man Backtracking benutzen soll.
+// -> Volle Punktzahl nur, wenn man den vector erst sortiert und dann reversed, da dann auch wieder
+// "Greedy"-Aspekt vorhanden
+
+// Leichter könnte man die Aufgabe machen indem man einen Programmrahmen bereitstellt
+
+
+#include <iostream>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+
+// Could/Should be both parameters of the isCorrectChangeAvailable - Function.
+std::vector<int> coins = {6, 9};
+int ChangeToBeChecked = 187;
+
+
+bool isCorrectChangeAvailable(int remaining_change){
+    if(remaining_change < 0)
+        return false;
+    if(remaining_change == 0)
+        return true;
+
+    for(auto coin : coins){
+        if(isCorrectChangeAvailable(remaining_change - coin)){
+            std::cout << coin << " ";
+            return true;
+        }
+    }
+    return false;
+}
+
+
+
+int main (){
+    if(isCorrectChangeAvailable(ChangeToBeChecked)){
+        std::cout << "Change is available." << std::endl;
+    } else {
+        std::cout << "Correct change is not available." << std::endl;
+    }
+}

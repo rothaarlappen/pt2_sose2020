@@ -6,7 +6,7 @@
 #include <cstring>
 #include <cmath>
 
-static const auto N = 3;
+static const auto N = 7;
 
 using Tower = std::pair<char, std::vector<int>>;
 auto A = Tower(static_cast<unsigned char>('A'), std::vector<int>());
