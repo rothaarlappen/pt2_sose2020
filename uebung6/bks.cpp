@@ -26,7 +26,7 @@ BKS<T>::BKS(const vector<pair<int, int>> &weight_benefit_list)
     for(int i = 1; i <= weight_benefit_list.size(); i++){
         itemlist_.push_back(
             Item(i, weight_benefit_list[i].first, weight_benefit_list[i].second)
-            )
+            );
     }
 }
 
