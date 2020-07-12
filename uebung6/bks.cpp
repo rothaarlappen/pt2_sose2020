@@ -6,6 +6,7 @@ template <class T>
 BKS<T>::BKS(const BKS<T> &copy)
 {
     // ...
+    itemlist_ = copy.get();
 }
 
 template <class T>
@@ -13,7 +14,7 @@ BKS<T> &BKS<T>::operator=(const BKS<T> &copy)
 {
     if (&copy != this)
     { // check for self-assignment
-        // ...
+        this.set(copy.get());
     }
     return *this;
 }
@@ -22,20 +23,37 @@ template <class T>
 BKS<T>::BKS(const vector<pair<int, int>> &weight_benefit_list)
 {
     // ...
+    for(int i = 1; i <= weight_benefit_list.size(); i++){
+        itemlist_.push_back(
+            Item(i, weight_benefit_list[i].first, weight_benefit_list[i].second)
+            )
+    }
 }
 
 template <class T>
 bool BKS<T>::set(const vector<Item>& items)
 {
-    // ...
-
+    // is this legit?: are the items stored as pointers in the vector -> free them 
+    // before removing items:
+    itemlist_.clear();
+    for(auto& item : items){
+        itemlist_.push_back(item);
+    }
     return validateItems();
 }
 
 template <class T> bool BKS<T>::validateItems() const
 {
     // ...
-    return false;
+    vector<T> ids;
+    for(auto& item: itemlist_){
+        if(std::find(ids.begin(), ids.end(), item.identifier) != ids.end())
+            return false;
+        ids.push_back(item.identifier);
+        if(item.weigth < 0 || item.benefit < 0)
+            return false;
+    }
+    return true;
 }
 
 template <class T>
@@ -67,6 +85,10 @@ template <class T>
 void BKS<T>::compute_for_capacity(int capacity)
 {
     // ...
+    if (capacity != current_capacity_){
+        current_capacity_ = capacity;
+        // maximal_benefit_ = compute_knapsack(current_capacity_, 0);
+    }
 }
 
 template <class T>
