@@ -63,6 +63,8 @@ public:
 		brutto_ = new_brutto;
 		netto_ = calculateNetto();
 	};
+	void setText (std::string newText){ text_ = newText; };
+
 
 private:
 	CURRENCY currency_;
