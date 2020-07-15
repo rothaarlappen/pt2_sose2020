@@ -10,10 +10,7 @@ private:
 	float tax;
 	float netto;
 	float brutto;
-	float change_rate[2][2] {
-		{1.0000, 1.1395},
-		{0.8776, 1.0000}
-	};
+	float change_rate[2] {1.0000, 1.1395};
 
 public:
 
@@ -50,8 +47,8 @@ public:
 
 	// setter:
 	void set_cur(int new_cur) { 
-		brutto = brutto * change_rate[cur][new_cur];
-		netto = netto * change_rate[cur][new_cur];
+		brutto = brutto * change_rate[cur] * change_rate[new_cur];
+		netto = netto * change_rate[cur] * change_rate[new_cur];
 		cur = new_cur;
 	};
 	void set_tax(float new_tax) {
