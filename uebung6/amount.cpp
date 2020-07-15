@@ -1,77 +1,96 @@
 #include <ostream>
 #include <iostream>
+#include <string>
 
 class Amount
 {
-private:
-	// Todo 6.2
-	// Implement class Amount
-	int cur;
-	float tax;
-	float netto;
-	float brutto;
-	float change_rate[2] {1.0000, 1.1395};
 
 public:
 
-	enum {
+	enum CURRENCY{
 		EUR,
 		USD
 	};
-
-	enum {
-		NOR = 16,
-		RED = 5
+	enum TAX_RATE{
+		NORMAL = 16,
+		REDUCED = 5
 	};
 
 	Amount(){};
-
+	// Sinn? Ist das gefragt?
 	Amount operator=(Amount& amount){
-		cur = amount.get_cur();
-		tax = amount.get_tax();
-		netto = amount.get_netto();
-		brutto = amount.get_brutto();
+		currency_ = amount.get_cur();
+		taxRate_ = amount.get_tax_rate();
+		netto_ = amount.get_netto();
+		brutto_ = amount.get_brutto();
 		return *this;
 	};
-	Amount(int cur = EUR, float tax = NOR, float brutto = 0, float netto = 0) : 
-		cur{cur},
-		tax{tax},
-		brutto{(netto)? netto * (1+(tax/100)): brutto},
-		netto{(brutto)? brutto / (1+(tax/100)): netto} {};
+
+	Amount(const CURRENCY cur = EUR, const TAX_RATE TAX_RATE = NORMAL, float brutto = 0, float netto = 0, std::string text = "") : 
+		currency_		{cur},
+		taxRate_{TAX_RATE},
+		brutto_	{	(netto)		? calculcateBrutto(): 	brutto},
+		netto_	{ 	(brutto)	? calculateNetto()	: 	netto},
+		text_ 	{text}
+		{};
 
 	// getter:
-	int get_cur() {return cur;};
-	float get_tax() {return tax;};
-	float get_netto() {return netto;};
-	float get_brutto() {return brutto;};
+	CURRENCY get_cur() {return currency_;};
+	TAX_RATE get_tax_rate() {return taxRate_;};
 
+	float get_tax_value() { return brutto_ - netto_; };
+	float get_netto() {return netto_;};
+	float get_brutto() {return brutto_;};
+	
 	// setter:
-	void set_cur(int new_cur) { 
-		brutto = brutto * change_rate[cur] * change_rate[new_cur];
-		netto = netto * change_rate[cur] * change_rate[new_cur];
-		cur = new_cur;
+	void convertToNewCurrency(CURRENCY newCurrency) { 
+		brutto_ = brutto_ * changeRates_[currency_] * changeRates_[newCurrency];
+		netto_ = netto_ * changeRates_[currency_] * changeRates_[newCurrency];
+		currency_ = newCurrency;
 	};
-	void set_tax(float new_tax) {
-		tax = new_tax;
-		netto = brutto / (1+(tax/100));
+
+	void set_tax_rate(TAX_RATE new_tax_rate) {
+		taxRate_ = new_tax_rate;
+		netto_ = calculateNetto();
 	};
 	void set_netto(float new_netto) {
-		brutto = new_netto;
-		brutto = new_netto * (1+(tax/100));
+		netto_ = new_netto;
+		brutto_ = calculcateBrutto();
 	};
+	
+	// Steht nicht in der Aufgabenstellung? Notwendig?
 	void set_brutto(float new_brutto) {
-		brutto = new_brutto;
-		netto = brutto / (1+(tax/100));
+		brutto_ = new_brutto;
+		netto_ = calculateNetto();
 	};
 
+private:
+	CURRENCY currency_;
+	TAX_RATE taxRate_;
+	float netto_;
+	float brutto_;
+
+	std::string text_;
+
+	float changeRates_[2] {1.0000, 1.1395};
+
+	float calculateNetto(){ 
+		return brutto_ / taxAsFactor();
+	};
+	float calculcateBrutto(){
+		return netto_ * taxAsFactor();
+	};
+	
+	// Some magic only accountants understand
+	float taxAsFactor(){ return (1+(taxRate_/100)); };
 };
 
 
 void test()
 {
 	// Todo 6.2
-	// Implement tests
-	Amount x = Amount(Amount::EUR,Amount::NOR,0,0);
+	// Implement tests? 
+	Amount x = Amount(Amount::EUR, Amount::NORMAL, 0, 0);
 	x.set_brutto(2);
 	std::cout << "x -> 2" << std::endl;
 	Amount y = x;
@@ -84,13 +103,13 @@ void test()
 	std::cout << y.get_brutto() << std::endl;
 	std::cout << "test all getters:" << std::endl;
 	std::cout << x.get_brutto() << std::endl;
-	std::cout << x.get_tax() << std::endl;
+	std::cout << x.get_tax_rate() << std::endl;
 	std::cout << x.get_netto() << std::endl;
 	std::cout << x.get_cur() << std::endl;
 	std::cout << "Set to Dollar" << std::endl;
-	x.set_cur(Amount::USD);
+	x.convertToNewCurrency(Amount::USD);
 	std::cout << x.get_brutto() << std::endl;
-	std::cout << x.get_tax() << std::endl;
+	std::cout << x.get_tax_rate() << std::endl;
 	std::cout << x.get_netto() << std::endl;
 	std::cout << x.get_cur() << std::endl;
 }
