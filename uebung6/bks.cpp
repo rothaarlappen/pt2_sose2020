@@ -5,7 +5,7 @@
 template <class T>
 BKS<T>::BKS(const BKS<T>& copy)
 {
-  *this = copy;
+  this->itemlist_ = copy.get();
 }
 
 template <class T>
