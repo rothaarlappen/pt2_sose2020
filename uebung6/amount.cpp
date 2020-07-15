@@ -27,7 +27,8 @@ public:
 		RED = 5
 	};
 
-	Amount() {};
+	Amount(){};
+
 	Amount operator=(Amount& amount){
 		cur = amount.get_cur();
 		tax = amount.get_tax();
