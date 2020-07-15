@@ -63,6 +63,7 @@ void BKS<T>::selectedItems(int capacity, vector<int>& result)
 {
   compute_for_capacity(capacity);
   result.clear();
+
   for (auto i : current_selection_)
   {
     result.push_back(i);
@@ -73,13 +74,16 @@ template <class T>
 int BKS<T>::getMaximalBenefit(int capacity)
 {
   compute_for_capacity(capacity);
+  select_items(this->itemlist_.size(), capacity);
+
   return maximal_benefit_;
 }
 
 template <class T>
 void BKS<T>::compute_for_capacity(int capacity)
 {
-  // ...
+  this->current_capacity_ = capacity;
+  this->maximal_benefit_ = compute_knapsack(this->itemlist_.size(), capacity);
 }
 
 template <class T>
@@ -90,16 +94,16 @@ int BKS<T>::compute_knapsack(int k, int w)
   assert(w >= 0);
   assert(w <= current_capacity_);
 
-  if (k == 0)
-  {
-    return 0;
-  }
-  if (w == 0)
-  {
-    return 0;
-  }
+  if (k == 0) return 0;
+  if (w == 0) return 0;
 
-  // ...
+  int wk = this->itemlist_[k - 1].weight;
+  if (wk > w) return compute_knapsack(k - 1, w);
+
+  return max(
+    compute_knapsack(k - 1, w - wk) + this->itemlist_[k - 1].benefit,
+    compute_knapsack(k - 1, w)
+  );
 }
 
 template <class T>
@@ -115,7 +119,14 @@ void BKS<T>::select_items(int k, int w)
     return;
   }
 
-  // ...
+  if (compute_knapsack(k, w) != compute_knapsack(k - 1, w)) {
+    current_selection_.push_back(k - 1);
+    select_items(k - 1, w - this->itemlist_[k - 1].weight);
+  }
+  else {
+    select_items(k - 1, w);
+  }
+
 }
 
 template <class T>
