@@ -5,5 +5,8 @@
 
 7. Kapitel:
 
-- Zusatzaufgabe:
-- Lösung:
+- Zusatzaufgabe: Wir haben in der Vorlesung die Linked List und das Dynamic Array. Was ist der größte
+                 Vorteil eines Dynamic Array.
+- Lösung: Mit einem Dynamic Array sind konstante Zugriffszeiten möglich, da man Elemente per Index aufrufen kann.
+          Möchte man bei der Linked List auf ein Element zugreifen, so muss man zuerst durch alle Elemente, die Vorlesung
+          diesem in der Liste liegen iterieren.
