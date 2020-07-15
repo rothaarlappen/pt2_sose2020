@@ -106,14 +106,13 @@ class LoggedAccount : Account {
       // to insert {"inital_balance", balance} and {"current_balance", balance} Entrys.
       if (transactions_.size() <= 1){
         transactions_.push_back({ text, value });
-	  	return;
-	  }
+	  	  return;
+	    }
 
-      pair<string, int> current_balance = transactions_[transactions_.size() - 1];
-      transactions_[transactions_.size() - 1] = { text, value };
+      transactions_.pop_back();
+      transactions_.push_back({ text, value });
       transactions_.push_back({ "current_balance", this->balance_ });
-	  return;
-    }
+      }
 };
 
 int main(int argc, char** argv)

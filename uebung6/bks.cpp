@@ -5,7 +5,10 @@
 template <class T>
 BKS<T>::BKS(const BKS<T>& copy)
 {
-  this->itemlist_ = copy.get();
+    this->itemlist_ = copy.itemlist_;
+    this->current_selection_ = copy.current_selection_;
+    this->maximal_benefit_ = copy.maximal_benefit_;
+    this->current_capacity_ = copy.current_capacity_;
 }
 
 template <class T>
@@ -32,6 +35,9 @@ BKS<T>::BKS(const vector<pair<int, int>>& weight_benefit_list)
 template <class T>
 bool BKS<T>::set(const vector<Item>& items)
 {
+  this->current_capacity_ = 0;
+  this->maximal_benefit_ = 0;
+  this->current_selection_.clear();
   this->itemlist_ = items;
   return validateItems();
 }
@@ -74,7 +80,6 @@ template <class T>
 int BKS<T>::getMaximalBenefit(int capacity)
 {
   compute_for_capacity(capacity);
-  select_items(this->itemlist_.size(), capacity);
 
   return maximal_benefit_;
 }
@@ -82,8 +87,13 @@ int BKS<T>::getMaximalBenefit(int capacity)
 template <class T>
 void BKS<T>::compute_for_capacity(int capacity)
 {
-  this->current_capacity_ = capacity;
-  this->maximal_benefit_ = compute_knapsack(this->itemlist_.size(), capacity);
+  if(this->current_capacity_ != capacity) {
+        this->current_capacity_ = capacity;
+        this->maximal_benefit_ = compute_knapsack(itemlist_.size(), capacity);
+        this->current_selection_.clear();        
+        select_items(this->itemlist_.size(), capacity);
+        sort(current_selection_.begin(), current_selection_.end());
+    }
 }
 
 template <class T>
