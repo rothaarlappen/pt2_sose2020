@@ -1,12 +1,28 @@
 6. Kapitel:
 
-- Zusatzaufgabe:
-- Lösung:
+Zusatzaufgabe:
+-
+Lösung:
+-
+
 
 7. Kapitel:
 
-- Zusatzaufgabe: Wir haben in der Vorlesung die Linked List und das Dynamic Array. Was ist der größte
-                 Vorteil eines Dynamic Array.
-- Lösung: Mit einem Dynamic Array sind konstante Zugriffszeiten möglich, da man Elemente per Index aufrufen kann.
-          Möchte man bei der Linked List auf ein Element zugreifen, so muss man zuerst durch alle Elemente, die Vorlesung
-          diesem in der Liste liegen iterieren.
+Zusatzaufgabe:
+Du möchtest für dein Warteschlangen-System deine PT2-Kenntnisse zum Einsatz kommen lassen 
+und fragst dich wie du die Reihenfolge deiner Patienten/Besucher darstellen sollst.  
+Zur Auswahl stehen die aus der Vorlesung bekannte Linked List, das Array und das Dynamische Array.
+Wofür entscheidest du dich?
+(Hinweis: Beziehe bei deiner Überlegung den Aufwand für bestimmte Operationen auf den Datentyp mit ein.)
+
+Lösung:     
+Mit einem Array/Dynamic Array sind konstante Zugriffszeiten möglich, da man Elemente per Index aufrufen kann.
+Das ist für uns jedoch nicht wichtig, da wir bei einer Warteschlange hauptsächlich push_back() und 
+pop_front() Funktionen ausführen wollen. 
+Einem Array wird konstanter Speicherplatz zugewiesen, es eignet sich nicht für solche dynamischen Speicheroperationen.
+Auch das Dynamische Array eignet sich für unsere Aufgaben eher weniger: 
+Das entfernen des ersten Elements liegt in der Aufwandsklasse O(n). 
+
+Die Linked List bietet die Möglichkeit sowohl am Anfang als auch am Ende (Achtung: letztes Element muss bekannt sein)
+ein Element in konstanter Laufzeit zu entfernen/Hinzuzufügen. 
+Für das Warteschlangensystem eignet sich deshalb eine Linked List. 
