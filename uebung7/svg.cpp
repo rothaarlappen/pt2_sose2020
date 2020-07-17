@@ -15,6 +15,7 @@ std::string svg_stringbuilder(std::string tagName, tagvalues values){
     svg_tag += "/>\n";
     return svg_tag;
 }
+std::string iTOs(int i) {return std::to_string(i);}
 
 struct Tree
 {
@@ -95,17 +96,15 @@ void breadthFirstTraversal(Tree *root)
 void writeSVGNode(std::ofstream &stream, int id, int x, int y)
 {
     // TODO: Draw a circle at (x,y) and write the ID of the node inside of it
-
+    tagvalues circleValues = {{"cx", iTOs(x)}, {"cy", iTOs(y)}, {"r", "40"}, {"fill", "white"}, {"stroke-width", "4"}};
+    stream << svg_stringbuilder("circle", circleValues);
 }
 
 void writeSVGEdge(std::ofstream &stream, int x0, int y0, int x1, int y1)
 {
-    // TODO: Draw a line from (x0,y0) to (x1,y1)
-    // std::string line = "<line x1=\"" + x0 + "";
-    
-    // <line x1="25" y1="0" x2="200" y2="200" style="stroke:black;stroke-width:4" />
-    // stream <<   
-
+    // TODO: Draw a line from (x0,y0) to (x1,y1)    
+    tagvalues line_values = {{"x1", iTOs(x0)}, {"x2", iTOs(x1)}, {"y1", iTOs(y0)}, {"y2", iTOs(y0)}, {"style", "stroke:black;stroke-width:4"}};
+    stream << svg_stringbuilder("line", line_values);
 }
 
 void writeSVG(Tree *root, std::string filename)
