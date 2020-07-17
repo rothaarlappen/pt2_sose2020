@@ -3,6 +3,18 @@
 #include <vector>
 #include <string>
 #include <deque>
+#include <string>
+
+typedef std::vector<std::pair<std::string, std::string>> tagvalues;
+
+std::string svg_stringbuilder(std::string tagName, tagvalues values){
+    std::string svg_tag = "<" + tagName + " ";
+    for(auto value : values){
+        svg_tag += value.first + " = " + "\"" +value.second + "\"" + " ";
+    }
+    svg_tag += "/>\n";
+    return svg_tag;
+}
 
 struct Tree
 {
@@ -58,14 +70,26 @@ Tree *newTree(std::vector<int> ids)
 
 void depthFirstTraversal(Tree *root)
 {
-    // TODO: Traverse the tree depth-first
+    if(root == nullptr) return;
+    std::cout << root->id << " ";
+    depthFirstTraversal(root->leftChild);
+    depthFirstTraversal(root->rightChild);
 
 }
 
 void breadthFirstTraversal(Tree *root)
 {
-    // TODO: Traverse the tree breadth-first
+    if(root == nullptr) return;
+    std::vector<Tree> queue = std::vector<Tree>();
+    queue.push_back(*root);
 
+    while(queue.size() != 0){
+        Tree current_tree = queue[0];
+        if(current_tree.leftChild != nullptr) queue.push_back(*current_tree.leftChild);
+        if(current_tree.rightChild!= nullptr) queue.push_back(*current_tree.rightChild);
+        std::cout << current_tree.id << " ";
+        queue.erase(queue.begin());
+    }
 }
 
 void writeSVGNode(std::ofstream &stream, int id, int x, int y)
@@ -77,11 +101,27 @@ void writeSVGNode(std::ofstream &stream, int id, int x, int y)
 void writeSVGEdge(std::ofstream &stream, int x0, int y0, int x1, int y1)
 {
     // TODO: Draw a line from (x0,y0) to (x1,y1)
+    // std::string line = "<line x1=\"" + x0 + "";
+    
+    // <line x1="25" y1="0" x2="200" y2="200" style="stroke:black;stroke-width:4" />
+    // stream <<   
 
 }
 
 void writeSVG(Tree *root, std::string filename)
 {
+    std::ofstream svg_file(filename);
+    
+    tagvalues header_values ={{"version", "1.0"}, {"encoding", "iso-8859-1"}};
+    tagvalues svgTag_values = {{"width", "2000"}, {"height", "2000"}, {"style", "background:white"}};
+
+    svg_file << svg_stringbuilder("xml", header_values);
+    svg_file << svg_stringbuilder("svg", svgTag_values);
+
+
+    // some algorithm...
+
+    svg_file << "</svg>";
     // TODO: Write a valid svg file with the given filename which shows the given tree
 
 }
