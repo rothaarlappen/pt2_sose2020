@@ -4,18 +4,38 @@
 #include <string>
 #include <deque>
 #include <string>
+#include <math.h>
+
+#define HEIGHT "2000"
+#define WIDTH HEIGHT
 
 typedef std::vector<std::pair<std::string, std::string>> tagvalues;
 
-std::string svg_stringbuilder(std::string tagName, tagvalues values){
+std::string svg_stringbuilder(std::string tagName, tagvalues values, std::string content = ""){
     std::string svg_tag = "<" + tagName + " ";
     for(auto value : values){
-        svg_tag += value.first + " = " + "\"" +value.second + "\"" + " ";
+        svg_tag += value.first + "=" + "\"" +value.second + "\"" + " ";
     }
-    svg_tag += "/>\n";
+    svg_tag += ">";
+    svg_tag += content;
+    if(tagName != "svg"){
+        svg_tag += "</" + tagName + ">\n";
+    }
     return svg_tag;
 }
+
 std::string iTOs(int i) {return std::to_string(i);}
+
+struct Line {
+    int x1;
+    int x2;
+    int y1;
+    int y2;
+};
+struct Point{
+    int x;
+    int y;
+};
 
 struct Tree
 {
@@ -75,7 +95,6 @@ void depthFirstTraversal(Tree *root)
     std::cout << root->id << " ";
     depthFirstTraversal(root->leftChild);
     depthFirstTraversal(root->rightChild);
-
 }
 
 void breadthFirstTraversal(Tree *root)
@@ -93,40 +112,87 @@ void breadthFirstTraversal(Tree *root)
     }
 }
 
+void writeText(std::ofstream &stream, std::string text, int x, int y){
+    tagvalues textValues = {{"x", iTOs(x)}, {"y", iTOs(y)}, {"font-size", "35"}};
+    stream << svg_stringbuilder("text", textValues, text);
+}
+
 void writeSVGNode(std::ofstream &stream, int id, int x, int y)
 {
     // TODO: Draw a circle at (x,y) and write the ID of the node inside of it
-    tagvalues circleValues = {{"cx", iTOs(x)}, {"cy", iTOs(y)}, {"r", "40"}, {"fill", "white"}, {"stroke-width", "4"}};
+    tagvalues circleValues = {{"cx", iTOs(x)}, {"cy", iTOs(y)}, {"r", "40"}, {"fill", "white"}, {"stroke-width", "4"}, {"stroke", "black"}};
+
     stream << svg_stringbuilder("circle", circleValues);
+    writeText(stream, iTOs(id), x, y);    
 }
 
 void writeSVGEdge(std::ofstream &stream, int x0, int y0, int x1, int y1)
 {
     // TODO: Draw a line from (x0,y0) to (x1,y1)    
-    tagvalues line_values = {{"x1", iTOs(x0)}, {"x2", iTOs(x1)}, {"y1", iTOs(y0)}, {"y2", iTOs(y0)}, {"style", "stroke:black;stroke-width:4"}};
+    tagvalues line_values = {{"x1", iTOs(x0)}, {"x2", iTOs(x1)}, {"y1", iTOs(y0)}, {"y2", iTOs(y1)}, {"style", "stroke:black;stroke-width:4"}};
     stream << svg_stringbuilder("line", line_values);
+}
+
+void writeSVGHeader (std::ofstream &stream){
+    //tagvalues header_values ={{"version", "1.0"}, {"encoding", "iso-8859-1"}};
+    tagvalues svgTag_values = {{"width", WIDTH}, {"height", HEIGHT}, {"style", "background:white"}};
+
+    //stream << svg_stringbuilder("xml", header_values);
+    stream << "<?xml version = \"1.0\" encoding = \"iso-8859-1\"?>\n";
+    stream << svg_stringbuilder("svg", svgTag_values);
 }
 
 void writeSVG(Tree *root, std::string filename)
 {
     std::ofstream svg_file(filename);
     
-    tagvalues header_values ={{"version", "1.0"}, {"encoding", "iso-8859-1"}};
-    tagvalues svgTag_values = {{"width", "2000"}, {"height", "2000"}, {"style", "background:white"}};
+    writeSVGHeader(svg_file);
 
-    svg_file << svg_stringbuilder("xml", header_values);
-    svg_file << svg_stringbuilder("svg", svgTag_values);
+    std::vector<std::pair<Tree, Point>> queue = std::vector<std::pair<Tree, Point>>();
+    std::vector<Line> queue_line = std::vector<Line>();
+    Point root_coords = {std::stoi(WIDTH)/2 , 50};
+    queue.push_back({*root, root_coords});
 
+    int y = 50;
+    while(queue.size() != 0){
+        Tree current_tree = queue[0].first;
+        Point current_coords = queue[0].second;
 
-    // some algorithm...
-
+        writeSVGNode(svg_file, queue[0].first.id, queue[0].second.x, queue[0].second.y);
+        
+        int tiefe = y / 200;        
+        y = current_coords.y + 200;
+        int abschnitts_groesse = std::stoi(WIDTH) / pow(2, tiefe+1);
+        
+        if(current_tree.leftChild != nullptr){ 
+            int x = current_coords.x - (abschnitts_groesse/2);
+            Point p1 = {x, y};
+            queue.push_back({*current_tree.leftChild, p1});
+            writeSVGEdge(svg_file, current_coords.x, current_coords.y +40 , p1.x, p1.y -40);
+        }
+        if(current_tree.rightChild!= nullptr){ 
+            int x = current_coords.x + (abschnitts_groesse/2);
+            Point p1 = {x, y};
+            queue.push_back({*current_tree.rightChild, p1});
+            writeSVGEdge(svg_file, current_coords.x, current_coords.y +40, p1.x, p1.y -40);
+        }
+        queue.erase(queue.begin());
+    }
     svg_file << "</svg>";
-    // TODO: Write a valid svg file with the given filename which shows the given tree
+}
 
+void test(){
+    std::ofstream svg_file("test.svg");
+    writeSVGHeader(svg_file);
+    writeSVGNode(svg_file, 5, 100, 100);
+    writeSVGEdge(svg_file, 100, 100, 200, 100);
+    svg_file << "</svg>";
 }
 
 int main(int argc, char **argv)
 {
+    test();
+
     Tree *root1 = newTree({6, 2, 1, 4, 3, 5, 7, 9, 8});
     Tree *root2 = newTree({5, 9, 7, 6, 2, 1, 4, 3, 8});
 
