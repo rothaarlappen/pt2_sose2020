@@ -26,12 +26,6 @@ std::string svg_stringbuilder(std::string tagName, tagvalues values, std::string
 
 std::string iTOs(int i) {return std::to_string(i);}
 
-struct Line {
-    int x1;
-    int x2;
-    int y1;
-    int y2;
-};
 struct Point{
     int x;
     int y;
@@ -149,7 +143,6 @@ void writeSVG(Tree *root, std::string filename)
     writeSVGHeader(svg_file);
 
     std::vector<std::pair<Tree, Point>> queue = std::vector<std::pair<Tree, Point>>();
-    std::vector<Line> queue_line = std::vector<Line>();
     Point root_coords = {std::stoi(WIDTH)/2 , 50};
     queue.push_back({*root, root_coords});
 
