@@ -158,13 +158,13 @@ void writeSVG(Tree *root, std::string filename)
             int x = current_coords.x - (abschnitts_groesse/2);
             Point p1 = {x, y};
             queue.push_back({*current_tree.leftChild, p1});
-            writeSVGEdge(svg_file, current_coords.x, current_coords.y +40 , p1.x, p1.y -40);
+            writeSVGEdge(svg_file, current_coords.x, current_coords.y +40, p1.x, p1.y - 40);
         }
         if(current_tree.rightChild!= nullptr){ 
             int x = current_coords.x + (abschnitts_groesse/2);
             Point p1 = {x, y};
             queue.push_back({*current_tree.rightChild, p1});
-            writeSVGEdge(svg_file, current_coords.x, current_coords.y +40, p1.x, p1.y -40);
+            writeSVGEdge(svg_file, current_coords.x, current_coords.y +40, p1.x, p1.y - 40);
         }
         queue.erase(queue.begin());
     }
